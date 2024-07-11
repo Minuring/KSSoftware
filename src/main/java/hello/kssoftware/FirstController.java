@@ -16,6 +16,6 @@ public class FirstController {
 
     @GetMapping("/showMe")
     public List<String> hello() {
-        return Arrays.asList("도균 인사", "민우 인사", "세번째 인사", "네번째 인사", "해위", "배위");
+        return Arrays.asList("민우 인사");
     }
 }
