@@ -16,10 +16,6 @@ public class FirstController {
 
     @GetMapping("/showMe")
     public List<String> hello() {
-        return Arrays.asList("도균 인사");
-    }
-
-    public static void main(String[] args) {
-        System.out.println("testFetch");
+        return Arrays.asList("첫번째 인사");
     }
 }
