@@ -16,6 +16,7 @@ public class FirstController {
 
     @GetMapping("/showMe")
     public List<String> hello() {
+        System.out.println("fetchTest_minu");
         return Arrays.asList("도균 인사");
     }
 }
