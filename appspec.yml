@@ -2,10 +2,10 @@ version: 0.0
 os: linux
 files:
   - source: /src/front
-    destination: /home/ubuntu/KSSoftware
+    destination: /home/ubuntu/build-fe
     overwrite: yes
 permissions:
-  - object: /home/ubuntu/KSSoftware
+  - object: /home/ubuntu/build-fe
     owner: root
     group: root
     mode: 755
