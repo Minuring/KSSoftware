@@ -73,7 +73,7 @@ function Navi() {
         <Navbar.Collapse>
           <Nav>
             <NavDropdown id="Login" title="로그인" menuVariant="dark">
-              <NavDropdown.Item href={base + "/Login/LoginForm"}>로그인</NavDropdown.Item>
+              <NavDropdown.Item href={base + "/Login/LoginHome"}>로그인</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
