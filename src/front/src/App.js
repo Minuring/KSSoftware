@@ -7,7 +7,6 @@ import Layout from './components/Layout/Layout';
 import CreditCalculator from "./components/pages/Etc/CreditCalculator";
 import Study from "./components/pages/Etc/Study";
 import UsedTrade from "./components/pages/Etc/UsedTrade";
-import LoginForm from "./components/pages/Login/LoginForm";
 import Board from "./components/pages/Board/Board";
 import PostBoard from "./components/pages/Board/PostBoard";
 import Files from "./components/pages/Files/Files";
@@ -32,7 +31,8 @@ function App() {
                     <Route path="/Etc/UsedTrade" element={<UsedTrade />} />
 
                     {/*로그인*/}
-                    <Route path="/Login/LoginForm" element={<LoginForm />} />
+                    <Route path="/Login/SignUp" element={<SignUp />} />
+                    <Route path="/Login/LoginHome" element={<LoginHome />} />
                 </Routes>
             </HashRouter>
         </Layout>
