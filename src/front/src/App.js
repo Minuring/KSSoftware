@@ -15,11 +15,12 @@ import Senior_Semester_2nd from "./components/pages/Senior/Senior_Semester_2nd";
 import CreditCalculator from "./components/pages/Etc/CreditCalculator";
 import Study from "./components/pages/Etc/Study";
 import UsedTrade from "./components/pages/Etc/UsedTrade";
-import LoginForm from "./components/pages/Login/LoginForm";
+import LoginHome from "./components/pages/Login/LoginHome";
 import FreshmanBoard from "./components/pages/Board/FreshmanBoard";
 import SophomoreBoard from "./components/pages/Board/SophomoreBoard";
 import JuniorBoard from "./components/pages/Board/JuniorBoard";
 import SeniorBoard from "./components/pages/Board/SeniorBoard";
+import SignUp from "./components/pages/Login/SignUp";
 
 
 function App() {
@@ -56,7 +57,8 @@ function App() {
                     <Route path="/Etc/UsedTrade" element={<UsedTrade />} />
 
                     {/*로그인*/}
-                    <Route path="/Login/LoginForm" element={<LoginForm />} />
+                    <Route path="/Login/SignUp" element={<SignUp />} />
+                    <Route path="/Login/LoginHome" element={<LoginHome />} />
                 </Routes>
             </HashRouter>
         </Layout>
