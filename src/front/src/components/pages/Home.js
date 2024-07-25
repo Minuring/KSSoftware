@@ -38,19 +38,11 @@ const Home = () => {
             <Container style={containerStyle}>
                 <Row class="row row-cols-2 row-cols-md-4 g-2">
                     <Col>
-                        <PageCard title="게시판" text="1학년" src='/img/home/intro_coding.png' link="/Board/FreshmanBoard" />
+                        <PageCard title="자료" text="자료 게시판" src='/img/home/intro_coding.png' link="/Files" />
                     </Col>
                     <Col>
-                        <PageCard title="게시판" text="2학년" src='/img/home/intro_admission.png' link="/Board/SophomoreBoard" />
+                        <PageCard title="게시판" text="자유 게시판" src='/img/home/intro_coding.png' link="/Board" />
                     </Col>
-                    <Col>
-                        <PageCard title="게시판" text="3학년" src='/img/home/intro_curriculum.png' link="/Board/JuniorBoard" />
-                    </Col>
-                    <Col>
-                        <PageCard title="게시판" text="4학년" src='/img/home/intro_curriculum.png' link="/Board/SeniorBoard" />
-                    </Col>
-                </Row>
-                <Row>
                     <Col>
                         <PageCard title="기타유틸" text="학점계산기" src='/img/home/intro_career.png' link="/Etc/CreditCalculator" />
                     </Col>
