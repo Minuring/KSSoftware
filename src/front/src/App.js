@@ -10,6 +10,8 @@ import UsedTrade from "./components/pages/Etc/UsedTrade";
 import Board from "./components/pages/Board/Board";
 import PostBoard from "./components/pages/Board/PostBoard";
 import Files from "./components/pages/Files/Files";
+import SignUp from "./components/pages/Login/SignUp";
+import LoginHome from "./components/pages/Login/LoginHome";
 
 
 function App() {

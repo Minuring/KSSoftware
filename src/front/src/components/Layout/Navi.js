@@ -41,7 +41,7 @@ function Navi() {
           {/*로그인*/}
           <Navbar.Collapse>
             <Nav>
-              <NavLink href={base + "/Login/LoginForm"}>로그인</NavLink>
+              <NavLink href={base + "/Login/LoginHome"}>로그인</NavLink>
             </Nav>
           </Navbar.Collapse>
         </Container>
