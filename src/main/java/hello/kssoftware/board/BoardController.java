@@ -8,7 +8,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
 @Controller
 @RequestMapping("/board")
 public class BoardController {
