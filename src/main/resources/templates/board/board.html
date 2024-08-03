@@ -1,19 +1,15 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <link href="/css/bootstrap.min.css"
-          th:href="@{/css/bootstrap.min.css}"
-          rel="stylesheet">
-    <style>
-        .container {
-            max-width: 560px;
-        }
-    </style>
-</head>
-<body>
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 
-<div class="container">
+<style layout:fragment="css">
+    .container {
+        max-width: 560px;
+    }
+</style>
+
+<div class="container" layout:fragment="content">
 
     <div class="py-5 text-center">
         <h2>글 상세</h2>
@@ -27,7 +23,8 @@
     </div>
     <div>
         <label for="writer">작성자</label>
-        <input type="text" id="writer" name="writer" class="form-control" value="username" th:value="${board.writer}" readonly>
+        <input type="text" id="writer" name="writer" class="form-control" value="username" th:value="${board.writer}"
+               readonly>
     </div>
     <div>
         <label for="title">제목</label>
@@ -35,7 +32,8 @@
     </div>
     <div>
         <label for="content">내용</label>
-        <input type="text" id="content" name="content" class="form-control" value="abc" th:value="${board.content}" readonly>
+        <input type="text" id="content" name="content" class="form-control" value="abc" th:value="${board.content}"
+               readonly>
     </div>
 
     <hr class="my-4">
@@ -45,16 +43,17 @@
             <button class="w-100 btn btn-primary btn-lg"
                     onclick="location.href='edit.html'"
                     th:onclick="|location.href='@{/board/{boardId}/edit(boardId=${board.id})}'|"
-                    type="button">글 수정</button>
+                    type="button">글 수정
+            </button>
         </div>
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg"
                     onclick="location.href='items.html'"
                     th:onclick="|location.href='@{/board}'|"
-                    type="button">목록으로</button>
+                    type="button">목록으로
+            </button>
         </div>
     </div>
 
 </div> <!-- /container -->
-</body>
 </html>
