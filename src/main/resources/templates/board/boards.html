@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" style="margin-left: 30px" href="/"><b>경성대 소프트웨어학과</b></a>
+        <ul class="nav nav-underline">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/board">자유게시판</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/files">자료</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">기타</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/etc/creditCalculator">학점계산기</a></li>
+                    <li><a class="dropdown-item" href="/etc/study">스터디</a></li>
+                    <li><a class="dropdown-item" href="/etc/usedTrade">중고거래</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login">로그인</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container" style="max-width: 90%">
+    <div class="py-5 text-center">
+        <h2>게시판 </h2>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary float-end"
+                    onclick="location.href='/board/post'" type="button">새 글 작성
+            </button>
+        </div>
+    </div>
+
+    <hr class="my-4">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="board : ${boards}">
+                <td><a href="board.html" th:href="@{/board/{boardId}(boardId=${board.id})}" th:text="${board.id}">게시글ID</a></td>
+                <td><a href="board.html" th:href="@{/board/{boardId}(boardId=${board.id})}" th:text="${board.title}">제목</a></td>
+                <td th:text="${board.writer}">작성자</td>
+                <td th:text="${board.createdDate}">내용</td>
+                <td th:text="${board.count}">조회수</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div> <!-- /container -->
+<script src="/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
