@@ -1,16 +1,16 @@
 package hello.kssoftware.board;
 
+import hello.kssoftware.board.Board;
+import hello.kssoftware.board.BoardRepository;
+import hello.kssoftware.board.dto.BoardCreateDto;
+import hello.kssoftware.board.dto.BoardSearchDto;
+import hello.kssoftware.board.dto.BoardUpdateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -22,31 +22,32 @@ public class BoardService {
     @Autowired
     private BoardRepository boardRepository;
 
-    public Board createBoard(Board board) {
+    public Long createBoard(BoardCreateDto createDto) {
+        Board board = new Board();
+        board.setTitle(createDto.getTitle());
+        board.setWriter(createDto.getWriter());
+        board.setContent(createDto.getContent());
         board.setCreateDate(now());
         board.setUpdateDate(now());
 
         //임시 (로그인 서비스로부터 작성자 추출해야함)
-        if (board.getWriter() == null) {
+        if (createDto.getWriter() == null) {
             board.setWriter("testWriter");
         }
 
         return boardRepository.save(board);
     }
 
-    public boolean updateBoard(Long boardId, Board updateParam) {
-        log.info(updateParam.toString());
+    public void updateBoard(Long boardId, BoardUpdateDto updateDto) {
         Board findBoard = findById(boardId);
 
-        findBoard.setTitle(updateParam.getTitle());
-        findBoard.setContent(updateParam.getContent());
+        findBoard.setTitle(updateDto.getTitle());
+        findBoard.setContent(updateDto.getContent());
         findBoard.setUpdateDate(now());
-
-        return boardRepository.update(boardId, findBoard);
     }
 
-    public Board deleteBoard(Long boardId) {
-        return boardRepository.delete(boardId);
+    public void deleteBoard(Long boardId) {
+        boardRepository.delete(boardId);
     }
 
     @Transactional(readOnly = true)
@@ -55,8 +56,8 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public List<Board> findAll(BoardSearch boardSearch) {
-        return boardRepository.findAll(boardSearch);
+    public List<Board> findAll(BoardSearchDto boardSearchDto) {
+        return boardRepository.findAll(boardSearchDto);
     }
 
     private Date now() {

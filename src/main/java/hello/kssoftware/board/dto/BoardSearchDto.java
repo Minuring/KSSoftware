@@ -1,11 +1,11 @@
-package hello.kssoftware.board;
+package hello.kssoftware.board.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class BoardSearch {
+public class BoardSearchDto {
     private String title;
     private String writer;
 
