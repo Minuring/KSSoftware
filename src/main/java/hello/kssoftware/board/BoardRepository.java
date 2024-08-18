@@ -13,10 +13,7 @@ public interface BoardRepository {
     boolean update(Long id, Board updateParam);
 
     Board delete(Long id);
-    List<Board> findByTitle(String title);
 
-    List<Board> findByWriter(String writer);
-
-    List<Board> findAll();
+    List<Board> findAll(BoardSearch boardSearch);
 
 }

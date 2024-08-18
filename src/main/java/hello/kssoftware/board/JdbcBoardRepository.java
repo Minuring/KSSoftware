@@ -1,6 +1,7 @@
 package hello.kssoftware.board;
 
 
+import ch.qos.logback.core.util.StringUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -21,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Primary
+//@Primary
 @Slf4j
 public class JdbcBoardRepository implements BoardRepository {
     private final DataSource dataSource;
@@ -32,7 +34,7 @@ public class JdbcBoardRepository implements BoardRepository {
 
 
     public Board save(Board board) {
-        String sql = "insert into board(title, writer, createdate, updatedate, content) values(?, ?, ?, ?, ?)";
+        String sql = "insert into board(title, writer, create_date, update_date, content) values(?, ?, ?, ?, ?)";
 
         Connection connection = null;
         PreparedStatement pstmt = null;
@@ -44,8 +46,8 @@ public class JdbcBoardRepository implements BoardRepository {
 
             pstmt.setString(1, board.getTitle());
             pstmt.setString(2, board.getWriter());
-            pstmt.setString(3, String.valueOf(board.getCreatedDate()));
-            pstmt.setString(4, String.valueOf(board.getUpdatedDate()));
+            pstmt.setString(3, String.valueOf(board.getCreateDate()));
+            pstmt.setString(4, String.valueOf(board.getUpdateDate()));
             pstmt.setString(5, board.getContent());
 
             pstmt.executeUpdate();
@@ -87,8 +89,8 @@ public class JdbcBoardRepository implements BoardRepository {
                 board.setId(rs.getLong("id"));
                 board.setTitle(rs.getString("title"));
                 board.setWriter(rs.getString("writer"));
-                board.setCreatedDate(rs.getDate("createdate"));
-                board.setUpdatedDate(rs.getDate("updatedate"));
+                board.setCreateDate(rs.getDate("create_date"));
+                board.setUpdateDate(rs.getDate("update_date"));
                 board.setContent(rs.getString("content"));
             }
 
@@ -102,7 +104,6 @@ public class JdbcBoardRepository implements BoardRepository {
 
     @Override
     public boolean update(Long id, Board updateParam) {
-        Board board = findById(id);
 
         String sql = "update board set title=?, content=?, updatedate=? where id=?";
 
@@ -116,7 +117,7 @@ public class JdbcBoardRepository implements BoardRepository {
 
             pstmt.setString(1, updateParam.getTitle());
             pstmt.setString(2, updateParam.getContent());
-            pstmt.setString(3, String.valueOf(updateParam.getUpdatedDate()));
+            pstmt.setString(3, String.valueOf(updateParam.getUpdateDate()));
             pstmt.setString(4, String.valueOf(id));
 
             int result = pstmt.executeUpdate();
@@ -184,8 +185,19 @@ public class JdbcBoardRepository implements BoardRepository {
 
     }
 
-    public List<Board> findAll() {
+    public List<Board> findAll(BoardSearch boardSearch) {
         String sql = "select * from board";
+
+        boolean isFirstCondition = true;
+        if (StringUtils.hasText(boardSearch.getTitle())) {
+            sql += " where title like '%" + boardSearch.getTitle() + "%'";
+            isFirstCondition = false;
+        }
+
+        if (StringUtils.hasText(boardSearch.getWriter())) {
+            sql += isFirstCondition ? " where" : " and";
+            sql += " writer like '%" + boardSearch.getWriter() + "%'";
+        }
 
         Connection connection = null;
         PreparedStatement pstmt = null;
@@ -203,10 +215,10 @@ public class JdbcBoardRepository implements BoardRepository {
                 board.setId(rs.getLong("id"));
                 board.setTitle(rs.getString("title"));
                 board.setWriter(rs.getString("writer"));
-                board.setCreatedDate(rs.getDate("createdate"));
-                board.setUpdatedDate(rs.getDate("updatedate"));
+                board.setCreateDate(rs.getDate("create_date"));
+                board.setUpdateDate(rs.getDate("update_date"));
                 board.setContent(rs.getString("content"));
-                board.setCount(rs.getInt("count"));
+                board.setViews(rs.getInt("views"));
 
                 boards.add(board);
             }
@@ -220,75 +232,6 @@ public class JdbcBoardRepository implements BoardRepository {
         }
     }
 
-    @Override
-    public List<Board> findByTitle(String title) {
-        String sql = "select * from board where title like ?";
-        Connection connection = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
-        try {
-            connection = getConnection();
-            pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, title);
-
-            rs = pstmt.executeQuery();
-            List<Board> boards = new ArrayList<>();
-
-            while (rs.next()) {
-                Board board = new Board();
-                board.setId(rs.getLong("id"));
-                board.setTitle(rs.getString("title"));
-                board.setWriter(rs.getString("writer"));
-                board.setCreatedDate(rs.getDate("createdate"));
-                board.setUpdatedDate(rs.getDate("updatedate"));
-                board.setContent(rs.getString("content"));
-
-                boards.add(board);
-            }
-
-            return boards;
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        } finally {
-            close(connection, pstmt, rs);
-        }
-    }
-
-    @Override
-    public List<Board> findByWriter(String writer) {
-        String sql = "select * from board where writer = ?";
-        Connection connection = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
-        try {
-            connection = getConnection();
-            pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, writer);
-
-            rs = pstmt.executeQuery();
-            List<Board> boards = new ArrayList<>();
-
-            while (rs.next()) {
-                Board board = new Board();
-                board.setId(rs.getLong("id"));
-                board.setTitle(rs.getString("title"));
-                board.setWriter(rs.getString("writer"));
-                board.setCreatedDate(rs.getDate("createdate"));
-                board.setUpdatedDate(rs.getDate("updatedate"));
-                board.setContent(rs.getString("content"));
-
-                boards.add(board);
-            }
-
-            return boards;
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        } finally {
-            close(connection, pstmt, rs);
-        }
-    }
 
     private Connection getConnection() {
         return DataSourceUtils.getConnection(dataSource);

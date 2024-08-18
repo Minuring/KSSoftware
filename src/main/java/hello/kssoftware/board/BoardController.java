@@ -13,11 +13,11 @@ import java.util.List;
 public class BoardController {
 
     @Autowired
-    private BoardServiceImpl boardService;
+    private BoardService boardService;
 
     @GetMapping
-    public String boards(Model model) {
-        List<Board> boards = boardService.getAllBoards();
+    public String boards(@ModelAttribute("boardSearch") BoardSearch boardSearch, Model model) {
+        List<Board> boards = boardService.findAll(boardSearch);
         model.addAttribute("boards", boards);
         return "board/boards";
     }
