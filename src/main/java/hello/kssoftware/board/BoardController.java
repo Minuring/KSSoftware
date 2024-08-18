@@ -1,5 +1,8 @@
 package hello.kssoftware.board;
 
+import hello.kssoftware.board.dto.BoardCreateDto;
+import hello.kssoftware.board.dto.BoardSearchDto;
+import hello.kssoftware.board.dto.BoardUpdateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +19,8 @@ public class BoardController {
     private BoardService boardService;
 
     @GetMapping
-    public String boards(@ModelAttribute("boardSearch") BoardSearch boardSearch, Model model) {
-        List<Board> boards = boardService.findAll(boardSearch);
+    public String boards(@ModelAttribute BoardSearchDto boardSearchDto, Model model) {
+        List<Board> boards = boardService.findAll(boardSearchDto);
         model.addAttribute("boards", boards);
         return "board/boards";
     }
@@ -35,24 +38,22 @@ public class BoardController {
     }
 
     @PostMapping("/post")
-    public String createBoard(Board board, RedirectAttributes redirectAttributes) {
-        Board createdBoard = boardService.createBoard(board);
-        redirectAttributes.addAttribute("boardId", createdBoard.getId());
-        redirectAttributes.addAttribute("status", true);
-        return "redirect:/board";
+    public String createBoard(BoardCreateDto createDto, RedirectAttributes redirectAttributes) {
+        Long boardId = boardService.createBoard(createDto);
+        redirectAttributes.addAttribute("boardId", boardId);
+        return "redirect:/board/{boardId}";
     }
 
     @GetMapping("/{id}/edit")
     public String editForm(@PathVariable(value = "id") long id, Model model) {
         Board findBoard = boardService.findById(id);
-//        model.addAttribute("id")
         model.addAttribute("board", findBoard);
         return "board/edit";
     }
 
     @PostMapping("/{id}/edit")
-    public String editBoard(@PathVariable(value = "id") Long id, Board board) {
-        boardService.updateBoard(id, board);
+    public String editBoard(@PathVariable(value = "id") Long id, BoardUpdateDto updateDto) {
+        boardService.updateBoard(id, updateDto);
         return "redirect:/board/{id}";
     }
 

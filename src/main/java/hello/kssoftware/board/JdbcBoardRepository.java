@@ -1,26 +1,16 @@
 package hello.kssoftware.board;
 
 
-import ch.qos.logback.core.util.StringUtil;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
+import hello.kssoftware.board.dto.BoardSearchDto;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 //@Primary
@@ -33,7 +23,7 @@ public class JdbcBoardRepository implements BoardRepository {
     }
 
 
-    public Board save(Board board) {
+    public Long save(Board board) {
         String sql = "insert into board(title, writer, create_date, update_date, content) values(?, ?, ?, ?, ?)";
 
         Connection connection = null;
@@ -60,7 +50,7 @@ public class JdbcBoardRepository implements BoardRepository {
                 throw new SQLException("Id 조회 실패");
             }
 
-            return board;
+            return board.getId();
 
         } catch (SQLException e) {
             throw new IllegalStateException(e);
@@ -103,36 +93,7 @@ public class JdbcBoardRepository implements BoardRepository {
     }
 
     @Override
-    public boolean update(Long id, Board updateParam) {
-
-        String sql = "update board set title=?, content=?, updatedate=? where id=?";
-
-        Connection connection = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
-        try {
-            connection = getConnection();
-            pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
-            pstmt.setString(1, updateParam.getTitle());
-            pstmt.setString(2, updateParam.getContent());
-            pstmt.setString(3, String.valueOf(updateParam.getUpdateDate()));
-            pstmt.setString(4, String.valueOf(id));
-
-            int result = pstmt.executeUpdate();
-
-            return result > 0;
-
-        } catch (SQLException e) {
-            throw new IllegalStateException(e);
-        } finally {
-            close(connection, pstmt, rs);
-        }
-    }
-
-    @Override
-    public Board delete(Long id) {
+    public void delete(Long id) {
         Board board = findById(id);
 
         String sql = "delete from board where id = ?";
@@ -148,7 +109,6 @@ public class JdbcBoardRepository implements BoardRepository {
             pstmt.setString(1, String.valueOf(id));
 
             pstmt.executeUpdate();
-            return board;
 
         } catch (SQLException e) {
             throw new IllegalStateException(e);
@@ -185,18 +145,18 @@ public class JdbcBoardRepository implements BoardRepository {
 
     }
 
-    public List<Board> findAll(BoardSearch boardSearch) {
+    public List<Board> findAll(BoardSearchDto boardSearchDto) {
         String sql = "select * from board";
 
         boolean isFirstCondition = true;
-        if (StringUtils.hasText(boardSearch.getTitle())) {
-            sql += " where title like '%" + boardSearch.getTitle() + "%'";
+        if (StringUtils.hasText(boardSearchDto.getTitle())) {
+            sql += " where title like '%" + boardSearchDto.getTitle() + "%'";
             isFirstCondition = false;
         }
 
-        if (StringUtils.hasText(boardSearch.getWriter())) {
+        if (StringUtils.hasText(boardSearchDto.getWriter())) {
             sql += isFirstCondition ? " where" : " and";
-            sql += " writer like '%" + boardSearch.getWriter() + "%'";
+            sql += " writer like '%" + boardSearchDto.getWriter() + "%'";
         }
 
         Connection connection = null;

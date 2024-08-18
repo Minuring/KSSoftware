@@ -1,11 +1,11 @@
 package hello.kssoftware.board;
 
+import hello.kssoftware.board.dto.BoardSearchDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -18,9 +18,9 @@ public class JpaBoardRepository implements BoardRepository {
     private final EntityManager em;
 
     @Override
-    public Board save(Board board) {
+    public Long save(Board board) {
         em.persist(board);
-        return board;
+        return board.getId();
     }
 
     @Override
@@ -29,46 +29,28 @@ public class JpaBoardRepository implements BoardRepository {
     }
 
     @Override
-    public boolean update(Long id, Board updateParam) {
-
-        Board findBoard = findById(id);
-        findBoard.setTitle(updateParam.getTitle());
-        findBoard.setContent(updateParam.getContent());
-        findBoard.setUpdateDate(updateParam.getUpdateDate());
-
-        return true;
-    }
-
-    @Override
-    public Board delete(Long id) {
+    public void delete(Long id) {
         Board findBoard = em.find(Board.class, id);
         em.remove(findBoard);
-        return findBoard;
     }
 
     @Override
-    public List<Board> findAll(BoardSearch boardSearch) {
+    public List<Board> findAll(BoardSearchDto boardSearchDto) {
 
         String jpql = "select b From Board b";
         boolean isFirstCondition = true;
 
-        //주문 상태 검색
-        if (StringUtils.hasText(boardSearch.getTitle())) {
-            jpql += " where b.title like '%" + boardSearch.getTitle() + "%'";
+        //제목으로 검색
+        if (StringUtils.hasText(boardSearchDto.getTitle())) {
+            jpql += " where b.title like '%" + boardSearchDto.getTitle() + "%'";
             isFirstCondition = false;
         }
-        //회원 이름 검색
-        if (StringUtils.hasText(boardSearch.getWriter())) {
+        //작성자로 검색
+        if (StringUtils.hasText(boardSearchDto.getWriter())) {
             jpql += isFirstCondition ? " where" : " and";
-            jpql += " b.writer like '%" + boardSearch.getWriter() + "%'";
+            jpql += " b.writer like '%" + boardSearchDto.getWriter() + "%'";
         }
         TypedQuery<Board> query = em.createQuery(jpql, Board.class).setMaxResults(1000); //최대 1000건
-//        if (StringUtils.hasText(boardSearch.getTitle())) {
-//            query = query.setParameter("title", boardSearch.getTitle());
-//        }
-//        if (StringUtils.hasText(boardSearch.getWriter())) {
-//            query = query.setParameter("writer", boardSearch.getWriter());
-//        }
         return query.getResultList();
     }
 }
