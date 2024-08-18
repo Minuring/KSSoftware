@@ -8,33 +8,61 @@
         <h2>게시판 </h2>
     </div>
 
-    <div class="row">
-        <div class="col">
-            <button class="btn btn-primary float-end"
-                    onclick="location.href='/board/post'" type="button">새 글 작성
-            </button>
-        </div>
-    </div>
-
-    <hr class="my-4">
     <div>
+        <form th:object="${boardSearch}" class="row row-cols-lg-auto g-3 align-items-center">
+            <div class="col-12">
+                <label class="visually-hidden" for="inlineFormInputGroupTitle">제목</label>
+                <div class="input-group">
+                    <div class="input-group-text">제목</div>
+                    <input type="text" th:field="*{title}" class="form-control" id="inlineFormInputGroupTitle"
+                           placeholder="제목">
+                </div>
+            </div>
+            <div class="col-12">
+                <label class="visually-hidden" for="inlineFormInputGroupWriter">작성자</label>
+                <div class="input-group">
+                    <div class="input-group-text">작성자</div>
+                    <input type="text" th:field="*{writer}" class="form-control" id="inlineFormInputGroupWriter"
+                           placeholder="닉네임">
+                </div>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">검색</button>
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-primary float-end"
+                        onclick="location.href='/board/post'" type="button">새 글 작성
+                </button>
+            </div>
+        </div>
+
+        <hr class="my-4">
+
         <table class="table">
             <thead>
             <tr>
                 <th>번호</th>
                 <th>제목</th>
                 <th>작성자</th>
-                <th>작성일</th>
+                <th>작성일자</th>
+                <th>수정일자</th>
                 <th>조회수</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="board : ${boards}">
-                <td><a href="board.html" th:href="@{/board/{boardId}(boardId=${board.id})}" th:text="${board.id}">게시글ID</a></td>
-                <td><a href="board.html" th:href="@{/board/{boardId}(boardId=${board.id})}" th:text="${board.title}">제목</a></td>
+                <td><a href="board.html" th:href="@{/board/{boardId}(boardId=${board.id})}"
+                       th:text="${board.id}">게시글ID</a></td>
+                <td><a href="board.html" th:href="@{/board/{boardId}(boardId=${board.id})}"
+                       th:text="${board.title}">제목</a></td>
                 <td th:text="${board.writer}">작성자</td>
-                <td th:text="${board.createdDate}">내용</td>
-                <td th:text="${board.count}">조회수</td>
+                <td th:text="${#dates.format(board.createDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
+                <td th:text="${#dates.format(board.updateDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
+
+                <td th:text="${board.views}">조회수</td>
             </tr>
             </tbody>
         </table>

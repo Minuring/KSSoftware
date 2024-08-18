@@ -3,13 +3,9 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 
-<style layout:fragment="css">
-    .container {
-        max-width: 560px;
-    }
-</style>
+<style layout:fragment="css"></style>
 
-<div class="container" layout:fragment="content">
+<div class="container-md mb-lg-5" layout:fragment="content">
 
     <div class="py-5 text-center">
         <h2>글 상세</h2>
@@ -17,23 +13,39 @@
 
     <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
 
-    <div>
-        <label for="boardId">게시글 ID</label>
-        <input type="text" id="boardId" name="boardId" class="form-control" value="1" th:value="${board.id}" readonly>
+    <div class="container text-center mb-lg-4">
+        <div class="row align-items-start mb-3">
+            <div class="col-sm-1">
+                <label for="boardId">게시글 ID</label>
+                <input type="text" id="boardId" name="boardId" class="form-control bg-secondary-subtle" value="1" th:value="${board.id}" readonly>
+            </div>
+            <div class="col-sm-2">
+                <label for="writer">작성자</label>
+                <input type="text" id="writer" name="writer" class="form-control bg-secondary-subtle" value="username" th:value="${board.writer}"
+                       readonly>
+            </div>
+            <div class="col-lg">
+                <label for="title">제목</label>
+                <input type="text" id="title" name="title" class="form-control bg-secondary-subtle" value="제목A" th:value="${board.title}" readonly>
+            </div>
+        </div>
+        <div class="row align-items-start mb-3">
+            <div class="col-md">
+                <label for="createDate">작성일자</label>
+                <input type="text" id="createDate" name="boardCreateDate" class="form-control bg-secondary-subtle" value="yyyymmdd" th:value="${#dates.format(board.createDate, 'yyyy년 MM월 dd일 HH시 mm분')}" readonly>
+            </div>
+            <div class="col-md">
+                <label for="updateDate">수정일자</label>
+                <input type="text" id="updateDate" name="boardUpdateDate" class="form-control bg-secondary-subtle" value="yyyymmdd" th:value="${#dates.format(board.updateDate, 'yyyy년 MM월 dd일 HH시 mm분')}" readonly>
+            </div>
+        </div>
     </div>
-    <div>
-        <label for="writer">작성자</label>
-        <input type="text" id="writer" name="writer" class="form-control" value="username" th:value="${board.writer}"
-               readonly>
-    </div>
-    <div>
-        <label for="title">제목</label>
-        <input type="text" id="title" name="title" class="form-control" value="제목A" th:value="${board.title}" readonly>
-    </div>
-    <div>
-        <label for="content">내용</label>
+
+    <hr class="my-4">
+
+    <div class="container text-center">
         <input type="text" id="content" name="content" class="form-control" value="abc" th:value="${board.content}"
-               readonly>
+               style="min-height: 30rem" readonly>
     </div>
 
     <hr class="my-4">
