@@ -3,9 +3,11 @@ package hello.kssoftware.board;
 import hello.kssoftware.board.dto.BoardCreateDto;
 import hello.kssoftware.board.dto.BoardSearchDto;
 import hello.kssoftware.board.dto.BoardUpdateDto;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -33,12 +35,19 @@ public class BoardController {
     }
 
     @GetMapping("/post")
-    public String postForm() {
+    public String postForm(Model model) {
+        model.addAttribute("boardCreateDto", new BoardCreateDto());
         return "board/post";
     }
 
     @PostMapping("/post")
-    public String createBoard(BoardCreateDto createDto, RedirectAttributes redirectAttributes) {
+    public String createBoard(@Valid BoardCreateDto createDto,
+                              BindingResult result,
+                              RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "board/post";
+        }
+
         Long boardId = boardService.createBoard(createDto);
         redirectAttributes.addAttribute("boardId", boardId);
         return "redirect:/board/{boardId}";
