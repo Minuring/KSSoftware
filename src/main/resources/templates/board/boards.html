@@ -59,8 +59,8 @@
                 <td><a href="board.html" th:href="@{/board/{boardId}(boardId=${board.id})}"
                        th:text="${board.title}">제목</a></td>
                 <td th:text="${board.writer}">작성자</td>
-                <td th:text="${#dates.format(board.createDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
-                <td th:text="${#dates.format(board.updateDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
+                <td th:text="${#temporals.format(board.createDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
+                <td th:text="${#temporals.format(board.updateDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
 
                 <td th:text="${board.views}">조회수</td>
             </tr>

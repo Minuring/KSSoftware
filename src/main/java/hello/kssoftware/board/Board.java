@@ -6,7 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -23,9 +23,9 @@ public class Board {
 
     private String content;
 
-    private Date createDate;
+    private LocalDateTime createDate;
 
-    private Date updateDate;
+    private LocalDateTime updateDate;
 
     @ColumnDefault(value = "0")
     private Integer views = 0;
