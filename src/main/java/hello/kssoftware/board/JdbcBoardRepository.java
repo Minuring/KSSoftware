@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,8 +80,8 @@ public class JdbcBoardRepository implements BoardRepository {
                 board.setId(rs.getLong("id"));
                 board.setTitle(rs.getString("title"));
                 board.setWriter(rs.getString("writer"));
-                board.setCreateDate(rs.getDate("create_date"));
-                board.setUpdateDate(rs.getDate("update_date"));
+                board.setCreateDate(LocalDateTime.parse(rs.getString("create_date")));
+                board.setCreateDate(LocalDateTime.parse(rs.getString("update_date")));
                 board.setContent(rs.getString("content"));
             }
 
@@ -175,8 +176,8 @@ public class JdbcBoardRepository implements BoardRepository {
                 board.setId(rs.getLong("id"));
                 board.setTitle(rs.getString("title"));
                 board.setWriter(rs.getString("writer"));
-                board.setCreateDate(rs.getDate("create_date"));
-                board.setUpdateDate(rs.getDate("update_date"));
+                board.setCreateDate(LocalDateTime.parse(rs.getString("create_date")));
+                board.setCreateDate(LocalDateTime.parse(rs.getString("update_date")));
                 board.setContent(rs.getString("content"));
                 board.setViews(rs.getInt("views"));
 

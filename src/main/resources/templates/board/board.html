@@ -32,11 +32,11 @@
         <div class="row align-items-start mb-3">
             <div class="col-md">
                 <label for="createDate">작성일자</label>
-                <input type="text" id="createDate" name="boardCreateDate" class="form-control bg-secondary-subtle" value="yyyymmdd" th:value="${#dates.format(board.createDate, 'yyyy년 MM월 dd일 HH시 mm분')}" readonly>
+                <input type="text" id="createDate" name="boardCreateDate" class="form-control bg-secondary-subtle" value="yyyymmdd" th:value="${#temporals.format(board.createDate, 'yyyy년 MM월 dd일 HH시 mm분')}" readonly>
             </div>
             <div class="col-md">
                 <label for="updateDate">수정일자</label>
-                <input type="text" id="updateDate" name="boardUpdateDate" class="form-control bg-secondary-subtle" value="yyyymmdd" th:value="${#dates.format(board.updateDate, 'yyyy년 MM월 dd일 HH시 mm분')}" readonly>
+                <input type="text" id="updateDate" name="boardUpdateDate" class="form-control bg-secondary-subtle" value="yyyymmdd" th:value="${#temporals.format(board.updateDate, 'yyyy년 MM월 dd일 HH시 mm분')}" readonly>
             </div>
         </div>
     </div>

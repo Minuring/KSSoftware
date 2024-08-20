@@ -1,7 +1,5 @@
 package hello.kssoftware.board;
 
-import hello.kssoftware.board.Board;
-import hello.kssoftware.board.BoardRepository;
 import hello.kssoftware.board.dto.BoardCreateDto;
 import hello.kssoftware.board.dto.BoardSearchDto;
 import hello.kssoftware.board.dto.BoardUpdateDto;
@@ -11,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -60,10 +59,7 @@ public class BoardService {
         return boardRepository.findAll(boardSearchDto);
     }
 
-    private Date now() {
-        java.util.Date utilDate = new java.util.Date();
-        long currentMilliseconds = utilDate.getTime();
-
-        return new java.sql.Date(currentMilliseconds);
+    private LocalDateTime now() {
+        return LocalDateTime.now(ZoneId.of("Asia/Seoul"));
     }
 }
