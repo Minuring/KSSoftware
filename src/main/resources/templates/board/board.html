@@ -144,8 +144,8 @@
                                 <input id="commentId" type="hidden" th:field="*{commentId}">
                                 <div class="mb-3">
                                     <label th:for="*{content}" class="col-form-label">내용:</label>
-                                    <textarea id="commentText" class="form-control" th:field="*{content}" rows="3"
-                                              required></textarea>
+                                    <textarea class="form-control" th:field="*{content}" th:text="${content}" id="commentText" style="height: 100px" required></textarea>
+
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -200,7 +200,7 @@
         }
         function clickEditComment(commentId, content) {
             document.getElementById('commentId').setAttribute('value', commentId);
-            document.getElementById('commentText').innerText = content;
+            document.getElementById('commentText').innerHTML = content;
         }
 
     </script>
