@@ -1,14 +1,14 @@
 package hello.kssoftware.board;
 
-import hello.kssoftware.board.dto.BoardCreateDto;
-import hello.kssoftware.board.dto.BoardSearchDto;
-import hello.kssoftware.board.dto.BoardUpdateDto;
+import hello.kssoftware.board.dto.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -24,13 +24,21 @@ public class BoardController {
     public String boards(@ModelAttribute BoardSearchDto boardSearchDto, Model model) {
         List<Board> boards = boardService.findAll(boardSearchDto);
         model.addAttribute("boards", boards);
+        model.addAttribute("boardSearchDto", new BoardSearchDto());
         return "board/boards";
     }
 
     @GetMapping("/{id}")
-    public String board(@PathVariable(value = "id") long id, Model model) {
+    public String board(@PathVariable(value = "id") long id, Model model,
+                        @ModelAttribute CommentCreateDto commentCreateDto,
+                        @ModelAttribute CommentUpdateDto commentUpdateDto) {
         Board findBoard = boardService.findById(id);
+        List<Comment> comments = findBoard.getComments();
         model.addAttribute("board", findBoard);
+        model.addAttribute("commentCreateDto", commentCreateDto);
+        model.addAttribute("commentUpdateDto", commentUpdateDto);
+        model.addAttribute("comments", comments);
+
         return "board/board";
     }
 
@@ -70,5 +78,32 @@ public class BoardController {
     public String deleteBoard(@PathVariable(value = "id") Long id) {
         boardService.deleteBoard(id);
         return "redirect:/board";
+    }
+
+    @PostMapping("/{id}/comment/new")
+    public String createComment(@PathVariable(value = "id") Long boardId,
+                                CommentCreateDto commentCreateDto,
+                                RedirectAttributes redirectAttributes) {
+        boardService.createComment(boardId, commentCreateDto);
+        redirectAttributes.addAttribute("redirectStatus", "commentCreated");
+        return "redirect:/board/{id}";
+    }
+
+    @PostMapping("/{id}/comment/edit")
+    public String editComment(@PathVariable("id") Long boardId,
+                              CommentUpdateDto updateDto,
+                              RedirectAttributes redirectAttributes) {
+        boardService.updateComment(boardId, updateDto);
+        redirectAttributes.addAttribute("redirectStatus", "commentEdited");
+        return "redirect:/board/{id}";
+    }
+
+    @PostMapping("/{id}/comment/delete")
+    public String editComment(@PathVariable("id") Long boardId,
+                              @RequestParam(name = "commentId") Long commentId,
+                              RedirectAttributes redirectAttributes) {
+        boardService.deleteComment(boardId, commentId);
+        redirectAttributes.addAttribute("redirectStatus", "commentDeleted");
+        return "redirect:/board/{id}";
     }
 }

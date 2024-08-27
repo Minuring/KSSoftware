@@ -1,6 +1,7 @@
-package hello.kssoftware.board;
+package hello.kssoftware.board.repository;
 
 
+import hello.kssoftware.board.Board;
 import hello.kssoftware.board.dto.BoardSearchDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.datasource.DataSourceUtils;

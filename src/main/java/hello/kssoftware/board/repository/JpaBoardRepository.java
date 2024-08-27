@@ -1,5 +1,6 @@
-package hello.kssoftware.board;
+package hello.kssoftware.board.repository;
 
+import hello.kssoftware.board.Board;
 import hello.kssoftware.board.dto.BoardSearchDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
