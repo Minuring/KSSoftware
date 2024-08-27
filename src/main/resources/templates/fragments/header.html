@@ -23,11 +23,9 @@
                         <li><a class="dropdown-item" href="/etc/usedTrade">중고거래</a></li>
                     </ul>
                 </li>
-                <li class="nav-item" th:if="${isLoggedIn != null ? !isLoggedIn : true}">
-                    <a class="nav-link" href="/login/signin">로그인</a>
-                </li>
-                <li class="nav-item" th:if="${isLoggedIn}" >
-                    <a class="nav-link" href="/login/mypage">마이페이지</a>
+                <li class="nav-item">
+                    <a class="nav-link" th:text="${isLoggedIn} ? '마이페이지' : '로그인'"
+                       th:href="${isLoggedIn} ? '/login/mypage' : '/login/signin'">로그인</a>
                 </li>
             </ul>
         </div>
