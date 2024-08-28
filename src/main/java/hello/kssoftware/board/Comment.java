@@ -2,6 +2,7 @@ package hello.kssoftware.board;
 
 import hello.kssoftware.board.dto.CommentCreateDto;
 import hello.kssoftware.board.dto.CommentUpdateDto;
+import hello.kssoftware.login.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
@@ -23,7 +24,9 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "board_id")
     private Board board;
-    private String writer;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private Member writer;
     private boolean anonymousYn;
     private String content;
     private LocalDateTime createDate;
@@ -43,7 +46,7 @@ public class Comment {
     }
 
 
-    protected Comment(Board board, String writer, boolean anonymousYn, String content, LocalDateTime createDate) {
+    protected Comment(Board board, Member writer, boolean anonymousYn, String content, LocalDateTime createDate) {
         this.board = board;
         this.writer = writer;
         this.anonymousYn = anonymousYn;

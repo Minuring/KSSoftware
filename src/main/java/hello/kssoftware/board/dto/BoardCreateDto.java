@@ -1,5 +1,6 @@
 package hello.kssoftware.board.dto;
 
+import hello.kssoftware.login.Member;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,8 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BoardCreateDto {
-
-    private String writer;
+    
+    private Member writer;
 
     @NotEmpty(message = "제목을 입력하세요.")
     private String title;

@@ -1,5 +1,6 @@
 package hello.kssoftware.board;
 
+import hello.kssoftware.login.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,9 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String writer;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private Member writer;
 
     private String title;
 
@@ -33,4 +36,10 @@ public class Board {
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Comment> comments;
 
+    public Comment getComment(Long commentId) {
+        return comments.stream()
+                .filter(comment -> comment.getId().equals(commentId))
+                .findFirst()
+                .orElse(null);
+    }
 }

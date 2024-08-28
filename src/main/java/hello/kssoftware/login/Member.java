@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Objects;
+
 @Entity
 @Getter @Setter
 @ToString
@@ -22,5 +24,13 @@ public class Member {
 
     @Column(name = "usernum", nullable = false)
     private int userNum;    //학번
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Member member = (Member) object;
+        return userNum == member.userNum && Objects.equals(userId, member.userId) && Objects.equals(userName, member.userName) && Objects.equals(pwd, member.pwd);
+    }
 }
 
