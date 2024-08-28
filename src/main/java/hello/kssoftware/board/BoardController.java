@@ -24,7 +24,6 @@ public class BoardController {
     public String boards(@ModelAttribute BoardSearchDto boardSearchDto, Model model) {
         List<Board> boards = boardService.findAll(boardSearchDto);
         model.addAttribute("boards", boards);
-        model.addAttribute("boardSearchDto", new BoardSearchDto());
         return "board/boards";
     }
 
@@ -35,16 +34,13 @@ public class BoardController {
         Board findBoard = boardService.findById(id);
         List<Comment> comments = findBoard.getComments();
         model.addAttribute("board", findBoard);
-        model.addAttribute("commentCreateDto", commentCreateDto);
-        model.addAttribute("commentUpdateDto", commentUpdateDto);
         model.addAttribute("comments", comments);
 
         return "board/board";
     }
 
     @GetMapping("/post")
-    public String postForm(Model model) {
-        model.addAttribute("boardCreateDto", new BoardCreateDto());
+    public String postForm(@ModelAttribute BoardCreateDto boardCreateDto) {
         return "board/post";
     }
 
