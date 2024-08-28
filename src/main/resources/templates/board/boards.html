@@ -19,10 +19,10 @@
                 </div>
             </div>
             <div class="col-12">
-                <label class="visually-hidden" th:for="*{writer}">작성자</label>
+                <label class="visually-hidden" th:for="*{writerName}">작성자</label>
                 <div class="input-group">
                     <div class="input-group-text">작성자</div>
-                    <input type="text" th:field="*{writer}" class="form-control" id="inlineFormInputGroupWriter"
+                    <input type="text" th:field="*{writerName}" class="form-control" id="inlineFormInputGroupWriter"
                            placeholder="닉네임">
                 </div>
             </div>
@@ -59,7 +59,7 @@
                        th:text="${board.id}">게시글ID</a></td>
                 <td><a href="board.html" th:href="@{/board/{boardId}(boardId=${board.id})}"
                        th:text="${board.title}">제목</a></td>
-                <td th:text="${board.writer}">작성자</td>
+                <td th:text="${board.writer.userName} + ' (' + '***' + ${board.writer.userId.substring(3)} + ')'">작성자</td>
                 <td th:text="${#temporals.format(board.createDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
                 <td th:text="${#temporals.format(board.updateDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
 
