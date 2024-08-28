@@ -42,8 +42,7 @@ public class LoginController {
     @PostMapping("/signin")
     public String signin(@ModelAttribute MemberLoginDto memberLoginDto,
                          RedirectAttributes redirectAttributes,
-                         HttpServletRequest request,
-                         HttpServletResponse response, Model model) {
+                         HttpServletRequest request) {
         boolean isValid = memberService.validateLogin(memberLoginDto.getUserId(), memberLoginDto.getPwd());
 
         if (!isValid) {
@@ -57,18 +56,6 @@ public class LoginController {
             //세션
             HttpSession session = request.getSession();
             session.setAttribute("loginUser", loginUser);
-            //로그인확인 세션
-            session.setAttribute("isLoggedIn", true);
-            model.addAttribute("isLoggedIn", true);
-
-            //쿠키생성
-            Cookie userCookie = new Cookie("loginUser", loginUser.getUserId());
-            userCookie.setPath("/");    //쿠키 유효 url
-            response.addCookie(userCookie);
-            //로그인확인쿠키 생성
-            Cookie loginCookie = new Cookie("isLoggedIn", "true");
-            loginCookie.setPath("/");
-            response.addCookie(loginCookie);
 
             return "redirect:/";
         }

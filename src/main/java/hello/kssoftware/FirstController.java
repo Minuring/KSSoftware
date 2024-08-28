@@ -17,20 +17,4 @@ public class FirstController {
         return "index";
     }
 
-    @GetMapping("/")
-    public String home(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession();
-        boolean isLoggedIn = false;
-
-        if (session.getAttribute("isLoggedIn") == null) {
-            model.addAttribute("isLoggedIn", isLoggedIn);
-        }else {
-            isLoggedIn = true;
-        }
-
-        model.addAttribute("isLoggedIn", isLoggedIn);
-
-        return "index";
-    }
-
 }
