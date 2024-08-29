@@ -19,16 +19,17 @@
                 <div class="col-lg">
                     <label th:for="title">제목</label>
                     <input type="text" th:field="*{title}" placeholder="제목을 입력하세요."
-                           th:class="${#fields.hasErrors('title')}? 'form-control border-danger' : 'form-control'">
+                           th:class="${#fields.hasErrors('title')}? 'form-control border-danger' : 'form-control'" required>
                 </div>
             </div>
         </div>
 
         <div class="container text-center">
             <label th:for="content">내용</label>
-            <input type="text" th:field="*{content}" placeholder="내용을 입력하세요."
-                   th:class="${#fields.hasErrors('content')}? 'form-control border-danger' : 'form-control'"
-                   style="min-height: 30rem">
+            <textarea th:field="*{content}" placeholder="내용을 입력하세요."
+                      th:class="${#fields.hasErrors('content')}? 'form-control border-danger' : 'form-control'"
+                      style="min-height: 30rem" required>
+            </textarea>
         </div>
 
         <hr class="my-4">

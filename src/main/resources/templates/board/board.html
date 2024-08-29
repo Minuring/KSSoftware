@@ -65,8 +65,7 @@
     <hr class="my-4">
 
     <div class="container text-center">
-        <input type="text" id="content" name="content" class="form-control" value="abc" th:value="${board.content}"
-               style="min-height: 30rem" readonly>
+        <textarea class="form-control bg-white" th:text="${board.content}" style="min-height: 30rem" disabled></textarea>
     </div>
 
     <div class="container-md mb-lg-5">
