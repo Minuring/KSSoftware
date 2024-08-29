@@ -1,7 +1,9 @@
-package hello.kssoftware.board;
+package hello.kssoftware.board.repository;
 
 
+import hello.kssoftware.board.Board;
 import hello.kssoftware.board.dto.BoardSearchDto;
+import hello.kssoftware.login.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
@@ -16,7 +18,7 @@ import java.util.List;
 @Repository
 //@Primary
 @Slf4j
-public class JdbcBoardRepository implements BoardRepository {
+public class JdbcBoardRepository implements hello.kssoftware.board.repository.BoardRepository {
     private final DataSource dataSource;
 
     public JdbcBoardRepository(DataSource dataSource) {
@@ -36,7 +38,7 @@ public class JdbcBoardRepository implements BoardRepository {
             pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             pstmt.setString(1, board.getTitle());
-            pstmt.setString(2, board.getWriter());
+            pstmt.setString(2, board.getWriter().getUserName());
             pstmt.setString(3, String.valueOf(board.getCreateDate()));
             pstmt.setString(4, String.valueOf(board.getUpdateDate()));
             pstmt.setString(5, board.getContent());
@@ -79,7 +81,7 @@ public class JdbcBoardRepository implements BoardRepository {
             if (rs.next()) {
                 board.setId(rs.getLong("id"));
                 board.setTitle(rs.getString("title"));
-                board.setWriter(rs.getString("writer"));
+                board.setWriter(rs.getObject("writer", Member.class));
                 board.setCreateDate(LocalDateTime.parse(rs.getString("create_date")));
                 board.setCreateDate(LocalDateTime.parse(rs.getString("update_date")));
                 board.setContent(rs.getString("content"));
@@ -155,9 +157,9 @@ public class JdbcBoardRepository implements BoardRepository {
             isFirstCondition = false;
         }
 
-        if (StringUtils.hasText(boardSearchDto.getWriter())) {
+        if (StringUtils.hasText(boardSearchDto.getWriterName())) {
             sql += isFirstCondition ? " where" : " and";
-            sql += " writer like '%" + boardSearchDto.getWriter() + "%'";
+            sql += " writer like '%" + boardSearchDto.getWriterName() + "%'";
         }
 
         Connection connection = null;
@@ -175,7 +177,7 @@ public class JdbcBoardRepository implements BoardRepository {
                 Board board = new Board();
                 board.setId(rs.getLong("id"));
                 board.setTitle(rs.getString("title"));
-                board.setWriter(rs.getString("writer"));
+                board.setWriter(rs.getObject("writer", Member.class));
                 board.setCreateDate(LocalDateTime.parse(rs.getString("create_date")));
                 board.setCreateDate(LocalDateTime.parse(rs.getString("update_date")));
                 board.setContent(rs.getString("content"));

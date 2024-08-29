@@ -1,25 +1,61 @@
 <!DOCTYPE html>
-<html xmlns:th="http//www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
+<head>
+    <style layout:fragment="css">
+        .container {
+            max-width: 560px;
+        }
+    </style>
+</head>
 
-<!--<style layout:fragment="css">-->
-<!--    /*.container {*/-->
-<!--    /*    max-width: 560px;*/-->
-<!--    /*}*/-->
-<!--    여기에 필요하면 위 처럼 css    -->
-<!--</style>-->
+<div class="container" layout:fragment="content">
 
-<!--<script layout:fragment="script">-->
-<!--    여기에 필요하면 javascript -->
-<!--</script>-->ㄴ
+    <div class="py-5 text-center">
+        <h2>회원 가입</h2>
+    </div>
 
-<div layout:fragment="content">
-    <!--    이 태그로 감싸서 본문 작성    -->
+    <form action="/login/signup"  th:object="${memberCreateDto}" method="post">
 
-    <div>회원가입</div>
+        <div th:if="${param.error}">
+            <div class="alert alert-danger">
+                아이디 또는 닉네임 중복입니다
+            </div>
+        </div>
 
-    <!--    -->
+        <div>
+            <label th:for="userId">아이디</label>
+            <input type="text" th:field="*{userId}" class="form-control" placeholder="아이디를 입력하세요">
+        </div>
+        <div>
+            <label th:for="pwd">비밀번호</label>
+            <input type="text" th:field="*{pwd}" class="form-control" placeholder="비밀번호를 입력하세요">
+        </div>
+        <div>
+            <label th:for="userName">닉네임</label>
+            <input type="text" th:field="*{userName}"  class="form-control" placeholder="닉네임을 입력하세요">
+        </div>
+        <div>
+            <label th:for="userNum">학번</label>
+            <input type="text" th:field="*{userNum}"  class="form-control" placeholder="학번을 입력하세요">
+        </div>
+
+        <hr class="my-4">
+
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-primary btn-lg" type="submit">등록</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        onclick="location.href='index.html'"
+                        th:onclick="|location.href='@{/}'|"
+                        type="button">취소
+                </button>
+            </div>
+        </div>
+
+    </form>
+
 </div>
-
-</html>

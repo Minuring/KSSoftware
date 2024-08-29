@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <style layout:fragment="css">
+        .container {
+            max-width: 560px;
+        }
+    </style>
+</head>
+
+<div class="container" layout:fragment="content">
+
+    <div class="py-5 text-center">
+        <h2>로그아웃</h2>
+    </div>
+    <form action="/login/logout" method="post">
+        <button type="submit">로그아웃</button>
+    </form>
+
+</div>

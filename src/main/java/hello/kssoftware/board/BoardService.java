@@ -1,11 +1,10 @@
 package hello.kssoftware.board;
 
-import hello.kssoftware.board.dto.BoardCreateDto;
-import hello.kssoftware.board.dto.BoardSearchDto;
-import hello.kssoftware.board.dto.BoardUpdateDto;
+import hello.kssoftware.board.dto.*;
+import hello.kssoftware.board.repository.BoardRepository;
+import hello.kssoftware.board.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +17,8 @@ import java.util.List;
 @Slf4j
 @Transactional
 public class BoardService {
-    @Autowired
-    private BoardRepository boardRepository;
+    private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
 
     public Long createBoard(BoardCreateDto createDto) {
         Board board = new Board();
@@ -28,11 +27,6 @@ public class BoardService {
         board.setContent(createDto.getContent());
         board.setCreateDate(now());
         board.setUpdateDate(now());
-
-        //임시 (로그인 서비스로부터 작성자 추출해야함)
-        if (createDto.getWriter() == null) {
-            board.setWriter("testWriter");
-        }
 
         return boardRepository.save(board);
     }
@@ -61,5 +55,23 @@ public class BoardService {
 
     private LocalDateTime now() {
         return LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+    }
+
+    public void createComment(Long boardId, CommentCreateDto createDto) {
+        Board board = boardRepository.findById(boardId);
+
+        Comment comment = Comment.createComment(board, createDto, now());
+
+        commentRepository.save(comment);
+    }
+
+    public void updateComment(Long boardId, CommentUpdateDto updateDto) {
+        Comment comment = commentRepository.findById(updateDto.getCommentId()).get();
+
+        comment.update(updateDto.getContent(), now());
+    }
+
+    public void deleteComment(Long boardId, Long commentId) {
+        commentRepository.deleteById(commentId);
     }
 }

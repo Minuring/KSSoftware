@@ -1,5 +1,6 @@
-package hello.kssoftware.board;
+package hello.kssoftware.board.repository;
 
+import hello.kssoftware.board.Board;
 import hello.kssoftware.board.dto.BoardSearchDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -46,9 +47,9 @@ public class JpaBoardRepository implements BoardRepository {
             isFirstCondition = false;
         }
         //작성자로 검색
-        if (StringUtils.hasText(boardSearchDto.getWriter())) {
+        if (StringUtils.hasText(boardSearchDto.getWriterName())) {
             jpql += isFirstCondition ? " where" : " and";
-            jpql += " b.writer like '%" + boardSearchDto.getWriter() + "%'";
+            jpql += " b.writer like '%" + boardSearchDto.getWriterName() + "%'";
         }
         TypedQuery<Board> query = em.createQuery(jpql, Board.class).setMaxResults(1000); //최대 1000건
         return query.getResultList();

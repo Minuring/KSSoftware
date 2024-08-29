@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class BoardSearchDto {
     private String title;
-    private String writer;
+    private String writerName;
 
 }
