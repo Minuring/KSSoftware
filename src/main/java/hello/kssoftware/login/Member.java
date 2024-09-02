@@ -1,5 +1,6 @@
 package hello.kssoftware.login;
 
+import hello.kssoftware.login.dto.MemberCreateDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,24 +14,33 @@ import java.util.Objects;
 public class Member {
 
     @Id
-    @Column(name = "userid", nullable = false)
-    private String userId;  //로그인 아이디
+    @Column(nullable = false)
+    private String id;
 
-    @Column(name = "username", unique = true)
-    private String userName;  //writer
+    @Column(unique = true)
+    private String name;
 
-    @Column(name = "pwd", nullable = false)
-    private String pwd; //로그인 비번
+    @Column(nullable = false)
+    private String password;
 
-    @Column(name = "usernum", nullable = false)
-    private int userNum;    //학번
+    @Column(nullable = false)
+    private Integer number;
 
     @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        Member member = (Member) object;
-        return userNum == member.userNum && Objects.equals(userId, member.userId) && Objects.equals(userName, member.userName) && Objects.equals(pwd, member.pwd);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Member member = (Member) o;
+        return Objects.equals(id, member.id) && Objects.equals(name, member.name) && Objects.equals(password, member.password) && Objects.equals(number, member.number);
+    }
+
+    public static Member createMember(MemberCreateDto memberCreateDto) {
+        Member member = new Member();
+        member.id = memberCreateDto.getId();
+        member.name = memberCreateDto.getName();
+        member.password = memberCreateDto.getPassword();
+        member.number = memberCreateDto.getNumber();
+        return member;
     }
 }
 

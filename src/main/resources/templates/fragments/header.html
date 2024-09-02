@@ -25,7 +25,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:text="${session.get('loginUser')} ? '마이페이지' : '로그인'"
-                       th:href="${session.get('loginUser')} ? '/login/mypage' : '/login/signin'">로그인</a>
+                       th:href="${session.get('loginUser')} ? '/login/myPage' : '/login/signIn'">로그인</a>
                 </li>
             </ul>
         </div>

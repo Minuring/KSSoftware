@@ -43,7 +43,7 @@ public class BoardController {
                            @ModelAttribute BoardCreateDto boardCreateDto) {
 
         if (member == null) {
-            return "redirect:/login/signin";
+            return "redirect:/login/signIn";
         }
 
         return "board/post";
@@ -69,7 +69,7 @@ public class BoardController {
     public String editForm(@SessionAttribute(name = "loginUser", required = false) Member member,
                            @PathVariable(value = "id") long id, Model model) {
         if (member == null) {
-            return "redirect:/login/signin";
+            return "redirect:/login/signIn";
         }
 
         Board findBoard = boardService.findById(id);
@@ -110,7 +110,7 @@ public class BoardController {
                                 CommentCreateDto commentCreateDto,
                                 RedirectAttributes redirectAttributes) {
         if (member == null) {
-            return "redirect:/login/signin";
+            return "redirect:/login/signIn";
         }
 
         commentCreateDto.setWriter(member);
@@ -125,7 +125,7 @@ public class BoardController {
                               @ModelAttribute CommentUpdateDto updateDto,
                               RedirectAttributes redirectAttributes) {
         if (member == null) {
-            return "redirect:/login/signin";
+            return "redirect:/login/signIn";
         }
 
         Board board = boardService.findById(boardId);
@@ -146,7 +146,7 @@ public class BoardController {
                               @RequestParam(name = "commentId") Long commentId,
                               RedirectAttributes redirectAttributes) {
         if (member == null) {
-            return "redirect:/login/signin";
+            return "redirect:/login/signIn";
         }
 
         Board board = boardService.findById(boardId);

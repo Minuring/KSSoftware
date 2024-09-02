@@ -59,7 +59,7 @@
                        th:text="${board.id}">게시글ID</a></td>
                 <td><a href="board.html" th:href="@{/board/{boardId}(boardId=${board.id})}"
                        th:text="${board.title}">제목</a></td>
-                <td th:text="${board.writer.userName} + ' (' + '***' + ${board.writer.userId.substring(3)} + ')'">작성자</td>
+                <td th:text="${board.writer.name} + ' (' + '***' + ${board.writer.id.substring(3)} + ')'">작성자</td>
                 <td th:text="${#temporals.format(board.createDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
                 <td th:text="${#temporals.format(board.updateDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
 

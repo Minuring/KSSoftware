@@ -49,7 +49,7 @@ public class JpaBoardRepository implements BoardRepository {
         //작성자로 검색
         if (StringUtils.hasText(boardSearchDto.getWriterName())) {
             jpql += isFirstCondition ? " where" : " and";
-            jpql += " b.writer like '%" + boardSearchDto.getWriterName() + "%'";
+            jpql += " b.writer.name like '%" + boardSearchDto.getWriterName() + "%'";
         }
         TypedQuery<Board> query = em.createQuery(jpql, Board.class).setMaxResults(1000); //최대 1000건
         return query.getResultList();

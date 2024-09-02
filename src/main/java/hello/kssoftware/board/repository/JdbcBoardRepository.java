@@ -38,7 +38,7 @@ public class JdbcBoardRepository implements hello.kssoftware.board.repository.Bo
             pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             pstmt.setString(1, board.getTitle());
-            pstmt.setString(2, board.getWriter().getUserName());
+            pstmt.setString(2, board.getWriter().getName());
             pstmt.setString(3, String.valueOf(board.getCreateDate()));
             pstmt.setString(4, String.valueOf(board.getUpdateDate()));
             pstmt.setString(5, board.getContent());

@@ -37,7 +37,7 @@
             <div class="col-sm-2">
                 <label for="writer">작성자</label>
                 <input type="text" id="writer" name="writer" class="form-control bg-secondary-subtle" value="username"
-                       th:value="${board.writer.userName} + ' (' + '***' + ${board.writer.userId.substring(3)} + ')'"
+                       th:value="${board.writer.name} + ' (' + '***' + ${board.writer.id.substring(3)} + ')'"
                        readonly>
             </div>
             <div class="col-lg">
@@ -103,7 +103,7 @@
                 <form method="post" th:action="@{{boardId}/comment/delete(boardId=${board.id})}">
                     <div class="d-flex mb-0 top-0">
                         <strong class="d-sm-inline-flex mt-0 mb-sm-1 me-2"
-                                th:text="${comment.anonymousYn} ? '익명' : ${comment.writer.userName} + ' (' + '***' + ${comment.writer.userId.substring(3)} + ')'">Commenter Name</strong>
+                                th:text="${comment.anonymousYn} ? '익명' : ${comment.writer.name} + ' (' + '***' + ${comment.writer.id.substring(3)} + ')'">Commenter Name</strong>
                         <p class="d-sm-inline-flex text-sm-end text-black-50"
                            th:text="${#temporals.format(comment.createDate, 'yyyy.MM.dd HH:mm')}"></p>
                         <button type="button" class="btn bg-white d-flex" data-bs-toggle="modal"
