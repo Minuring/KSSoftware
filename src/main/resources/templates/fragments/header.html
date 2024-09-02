@@ -32,5 +32,10 @@
     </nav>
     <!-- Navigation -->
 
+    <!-- Notification -->
+    <div th:if="${message}" th:replace="fragments/notification::notification"></div>
+    <script th:if="${message}" th:replace="fragments/notification::notification_script"></script>
+    <!-- Notification -->
+
 </div>
 </html>

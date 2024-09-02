@@ -13,13 +13,13 @@
         <h2>글 수정</h2>
     </div>
 
-    <form id="editForm" method="post">
+    <form id="editForm" th:object="${board}" method="post">
         <div class="container text-center mb-lg-4">
             <div class="row align-items-start">
                 <div class="col-sm-1">
                     <label for="boardId">게시글 ID</label>
                     <input type="text" id="boardId" name="boardId" class="form-control bg-secondary-subtle" value="1"
-                           th:value="${board.id}" readonly>
+                           th:value="*{id}" readonly>
                 </div>
                 <div class="col-sm-2">
                     <label for="writer">작성자</label>
@@ -30,15 +30,17 @@
                 <div class="col-lg">
                     <label for="title">제목</label>
                     <input type="text" id="title" name="title" class="form-control" value="제목A"
-                           th:value="${board.title}">
+                           th:value="*{title}" required>
                 </div>
             </div>
         </div>
 
         <div class="container text-center">
-            <label for="content">내용</label>
-            <input type="text" id="content" name="content" class="form-control" value="abc" th:value="${board.content}"
-                   style="min-height: 30rem">
+            <textarea th:field="*{content}" placeholder="내용을 입력하세요."
+                      th:class="${#fields.hasErrors('content')}? 'form-control border-danger' : 'form-control'"
+                      th:text="*{content}"
+                      style="min-height: 30rem" required>
+            </textarea>
         </div>
 
         <hr class="my-4">

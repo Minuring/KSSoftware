@@ -3,7 +3,9 @@ package hello.kssoftware.board;
 import hello.kssoftware.board.dto.*;
 import hello.kssoftware.login.Member;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,10 +16,12 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/board")
+@RequiredArgsConstructor
+@Slf4j
 public class BoardController {
 
-    @Autowired
-    private BoardService boardService;
+    private final BoardService boardService;
+    private final MessageSource messageSource;
 
     @GetMapping
     public String boards(@ModelAttribute BoardSearchDto boardSearchDto, Model model) {
@@ -60,8 +64,12 @@ public class BoardController {
         }
 
         createDto.setWriter(member);
+
         Long boardId = boardService.createBoard(createDto);
         redirectAttributes.addAttribute("boardId", boardId);
+
+        String message = messageSource.getMessage("board.created", null, null);
+        redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/board/{boardId}";
     }
 
@@ -83,24 +91,31 @@ public class BoardController {
 
     @PostMapping("/{id}/edit")
     public String editBoard(@SessionAttribute(name = "loginUser") Member member,
-                            @PathVariable(value = "id") Long id, BoardUpdateDto updateDto) {
+                            @PathVariable(value = "id") Long id, BoardUpdateDto updateDto,
+                            RedirectAttributes redirectAttributes) {
         Board board = boardService.findById(id);
         if (!board.getWriter().equals(member)) {
             return "redirect:/board/{id}";
         }
 
         boardService.updateBoard(id, updateDto);
+        String message = messageSource.getMessage("board.updated", null, null);
+        redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/board/{id}";
     }
 
     @PostMapping("/{id}/delete")
     public String deleteBoard(@SessionAttribute(name = "loginUser") Member member,
-                              @PathVariable(value = "id") Long id) {
+                              @PathVariable(value = "id") Long id,
+                              RedirectAttributes redirectAttributes) {
         Board board = boardService.findById(id);
         if (!board.getWriter().equals(member)) {
             return "redirect:/board/{id}";
         }
         boardService.deleteBoard(id);
+
+        String message = messageSource.getMessage("board.deleted", null, null);
+        redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/board";
     }
 
@@ -115,7 +130,9 @@ public class BoardController {
 
         commentCreateDto.setWriter(member);
         boardService.createComment(boardId, commentCreateDto);
-        redirectAttributes.addAttribute("redirectStatus", "commentCreated");
+
+        String message = messageSource.getMessage("comment.created", null, null);
+        redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/board/{id}";
     }
 
@@ -130,10 +147,11 @@ public class BoardController {
 
         Board board = boardService.findById(boardId);
         Comment comment = board.getComment(updateDto.getCommentId());
-        System.out.println("member = " + member + ", boardId = " + boardId + ", updateDto = " + updateDto);
         if (comment.getWriter().equals(member)) {
             boardService.updateComment(boardId, updateDto);
-            redirectAttributes.addAttribute("redirectStatus", "commentEdited");
+
+            String message = messageSource.getMessage("comment.updated", null, null);
+            redirectAttributes.addFlashAttribute("message", message);
         }
 
         //작성자 아닐 때 예외처리
@@ -153,7 +171,9 @@ public class BoardController {
         Comment comment = board.getComment(commentId);
         if (comment.getWriter().equals(member)) {
             boardService.deleteComment(boardId, commentId);
-            redirectAttributes.addAttribute("redirectStatus", "commentDeleted");
+
+            String message = messageSource.getMessage("comment.deleted", null, null);
+            redirectAttributes.addFlashAttribute("message", message);
         }
 
         //작성자 아닐 때 예외처리

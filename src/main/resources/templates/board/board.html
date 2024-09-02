@@ -65,8 +65,7 @@
     <hr class="my-4">
 
     <div class="container text-center">
-        <input type="text" id="content" name="content" class="form-control" value="abc" th:value="${board.content}"
-               style="min-height: 30rem" readonly>
+        <textarea class="form-control bg-white" th:text="${board.content}" style="min-height: 30rem" disabled></textarea>
     </div>
 
     <div class="container-md mb-lg-5">
@@ -160,49 +159,13 @@
             </div>
         </div>
 
-        <div class="toast-container position-fixed bottom-0 end-0 p-3">
-            <div id="messageToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-                    </svg>
-                    <strong class="me-auto">KSSoftware</strong>
-                    <small>now</small>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body" id="toast-message">
-                    토스트 메시지
-                </div>
-            </div>
-        </div>
 
     </div>
     <script th:inline="javascript">
-        window.onload = function() {
-            var redirectStatus = [[${param.redirectStatus}]];
-            if (redirectStatus) {
-                triggerToast(redirectStatus);
-            }
-        }
-        const MESSAGE_MAP = new Map([
-            ["commentCreated", "정상적으로 댓글이 작성되었습니다."],
-            ["commentEdited", "정상적으로 댓글이 수정되었습니다."],
-            ["commentDeleted", "정상적으로 댓글이 삭제되었습니다."],
-        ]);
-        function triggerToast(redirectStatus) {
-            const toast = document.getElementById('messageToast');
-            const toastMessageDOM = document.getElementById("toast-message");
-            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast)
-
-            toastMessageDOM.innerHTML = MESSAGE_MAP.get(redirectStatus+'');
-            toastBootstrap.show();
-        }
         function clickEditComment(commentId, content) {
             document.getElementById('commentId').setAttribute('value', commentId);
             document.getElementById('commentText').innerHTML = content;
         }
-
     </script>
 
 </div> <!-- /container -->
