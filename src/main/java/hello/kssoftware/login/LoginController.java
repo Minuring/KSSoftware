@@ -2,13 +2,12 @@ package hello.kssoftware.login;
 
 import hello.kssoftware.login.dto.MemberCreateDto;
 import hello.kssoftware.login.dto.MemberLoginDto;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -16,44 +15,39 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/login")
+@RequiredArgsConstructor
 public class LoginController {
-    @Autowired
-    private MemberService memberService;
-    @Autowired
-    private JpaMemberRepository jpaMemberRepository;
+    private final MemberService memberService;
+    private final JpaMemberRepository jpaMemberRepository;
 
     @GetMapping("/")
-    public String home(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-
-        if (session.getAttribute("loginUser") != null) {
+    public String home(@SessionAttribute(name = "loginUser", required = false) Member loginUser) {
+        if (loginUser != null) {
             return "redirect:/";
         } else{
-            return "redirect:/login/signin";
+            return "redirect:/login/signIn";
         }
     }
 
-    @GetMapping("/signin")  //로그인
-    public String signinForm(Model model){
+    @GetMapping("/signIn")
+    public String signInForm(Model model){
         model.addAttribute("memberLoginDto", new MemberLoginDto());
-        return "login/signin";
+        return "login/signIn";
     }
 
-    @PostMapping("/signin")
-    public String signin(@ModelAttribute MemberLoginDto memberLoginDto,
+    @PostMapping("/signIn")
+    public String signIn(@ModelAttribute MemberLoginDto memberLoginDto,
                          RedirectAttributes redirectAttributes,
                          HttpServletRequest request) {
-        boolean isValid = memberService.validateLogin(memberLoginDto.getUserId(), memberLoginDto.getPwd());
+        boolean isValid = memberService.validateLogin(memberLoginDto.getId(), memberLoginDto.getPassword());
 
         if (!isValid) {
             redirectAttributes.addAttribute("error", true);
-            return "redirect:/login/signin";
+            return "redirect:/login/signIn";
         } else {
-            //로그인 성공
-            Optional<Member> checkLogin = jpaMemberRepository.findUserId(memberLoginDto.getUserId());
-            Member loginUser = checkLogin.get();
+            Optional<Member> memberOptional = jpaMemberRepository.findUserId(memberLoginDto.getId());
+            Member loginUser = memberOptional.get();
 
-            //세션
             HttpSession session = request.getSession();
             session.setAttribute("loginUser", loginUser);
 
@@ -61,47 +55,42 @@ public class LoginController {
         }
     }
 
-    @GetMapping("/signup")  //회원가입
-    public String signupForm(Model model){
-        model.addAttribute("memberCreateDto", new MemberCreateDto());
-        return "login/signup";
+    @GetMapping("/signUp")
+    public String signupForm(@ModelAttribute MemberCreateDto memberCreateDto) {
+        return "login/signUp";
     }
 
-    @PostMapping("/signup") //회원가입
-    public String signup(@ModelAttribute Member member, RedirectAttributes redirectAttributes) {
-        //userId 중복 확인
-        if (memberService.isUserIdExists(member.getUserId())) {
-            redirectAttributes.addAttribute("error", true);
-            return "redirect:/login/signup";
+    @PostMapping("/signUp")
+    public String signup(@ModelAttribute MemberCreateDto memberCreateDto,
+                         RedirectAttributes redirectAttributes,
+                         BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "login/signUp";
         }
-        //userName 중복 확인
-        if (memberService.isUserNameExists(member.getUserName())) {
+        if (memberService.isUserIdExists(memberCreateDto.getId())) {
             redirectAttributes.addAttribute("error", true);
-            return "redirect:/login/signup";
+            return "redirect:/login/signUp";
+        }
+        if (memberService.isUserNameExists(memberCreateDto.getName())) {
+            redirectAttributes.addAttribute("error", true);
+            return "redirect:/login/signUp";
         }
 
-        memberService.join(member);
-        return "redirect:/";
+        memberService.join(Member.createMember(memberCreateDto));
+        return "index";
     }
 
-    @GetMapping("/mypage")
-    public String logout(Model model) {
+    @GetMapping("/myPage")
+    public String myPage(Model model) {
         model.addAttribute("isLoggedIn", true);
-        return "login/mypage";
+        return "login/myPage";
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
-        //세션 초기화
-        request.getSession().invalidate();
-        //쿠키 초기화
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                cookie.setMaxAge(0);
-                cookie.setPath("/");
-                response.addCookie(cookie);
-            }
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
         }
         return "redirect:/";
     }

@@ -16,7 +16,7 @@
         <h2>회원 가입</h2>
     </div>
 
-    <form action="/login/signup"  th:object="${memberCreateDto}" method="post">
+    <form action="/login/signUp"  th:object="${memberCreateDto}" method="post">
 
         <div th:if="${param.error}">
             <div class="alert alert-danger">
@@ -25,20 +25,20 @@
         </div>
 
         <div>
-            <label th:for="userId">아이디</label>
-            <input type="text" th:field="*{userId}" class="form-control" placeholder="아이디를 입력하세요">
+            <label th:for="Id">아이디</label>
+            <input type="text" th:field="*{id}" class="form-control" placeholder="아이디를 입력하세요">
         </div>
         <div>
-            <label th:for="pwd">비밀번호</label>
-            <input type="text" th:field="*{pwd}" class="form-control" placeholder="비밀번호를 입력하세요">
+            <label th:for="password">비밀번호</label>
+            <input type="text" th:field="*{password}" class="form-control" placeholder="비밀번호를 입력하세요">
         </div>
         <div>
-            <label th:for="userName">닉네임</label>
-            <input type="text" th:field="*{userName}"  class="form-control" placeholder="닉네임을 입력하세요">
+            <label th:for="Name">닉네임</label>
+            <input type="text" th:field="*{name}"  class="form-control" placeholder="닉네임을 입력하세요">
         </div>
         <div>
-            <label th:for="userNum">학번</label>
-            <input type="text" th:field="*{userNum}"  class="form-control" placeholder="학번을 입력하세요">
+            <label th:for="Number">학번</label>
+            <input type="text" th:field="*{number}"  class="form-control" placeholder="학번을 입력하세요">
         </div>
 
         <hr class="my-4">
