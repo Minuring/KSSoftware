@@ -7,24 +7,24 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" style="margin-left: 30px" href="/"><b>경성대 소프트웨어학과</b></a>
+            <a class="navbar-brand" style="margin-left: 30px" href="/" th:text="#{navi.title}"><b>경성대 소프트웨어학과</b></a>
             <ul class="nav nav-underline">
                 <li class="nav-item">
-                    <a class="nav-link" href="/board">자유게시판</a>
+                    <a class="nav-link" href="/board" th:text="#{navi.board}">자유게시판</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/files">자료</a>
+                    <a class="nav-link" href="/files" th:text="#{navi.files}">자료</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">기타</a>
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" th:text="#{navi.etc}">기타</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/etc/creditCalculator">학점계산기</a></li>
-                        <li><a class="dropdown-item" href="/etc/study">스터디</a></li>
-                        <li><a class="dropdown-item" href="/etc/usedTrade">중고거래</a></li>
+                        <li><a class="dropdown-item" href="/etc/creditCalculator" th:text="#{navi.etc.creditCalculator}">학점계산기</a></li>
+                        <li><a class="dropdown-item" href="/etc/study" th:text="#{navi.etc.study}">스터디</a></li>
+                        <li><a class="dropdown-item" href="/etc/usedTrade" th:text="#{navi.etc.usedTrade}">중고거래</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:text="${session.get('loginUser')} ? '마이페이지' : '로그인'"
+                    <a class="nav-link" th:text="${session.get('loginUser')} ? #{navi.myPage} : #{navi.login}"
                        th:href="${session.get('loginUser')} ? '/login/myPage' : '/login/signIn'">로그인</a>
                 </li>
             </ul>

@@ -5,36 +5,36 @@
 
 <div class="container" layout:fragment="content" style="max-width: 90%">
     <div class="py-5 text-center">
-        <h2>게시판 </h2>
+        <h2 th:text="#{page.boards}">게시판 </h2>
     </div>
 
     <div>
         <form th:object="${boardSearchDto}" class="row row-cols-lg-auto g-3 align-items-center">
             <div class="col-12">
-                <label class="visually-hidden" th:for="*{title}">제목</label>
+                <label class="visually-hidden" th:for="*{title}" th:text="#{label.boardSearch.title}">제목</label>
                 <div class="input-group">
-                    <div class="input-group-text">제목</div>
+                    <div class="input-group-text" th:text="#{label.boardSearch.title}">제목</div>
                     <input type="text" th:field="*{title}" class="form-control" id="inlineFormInputGroupTitle"
                            placeholder="제목">
                 </div>
             </div>
             <div class="col-12">
-                <label class="visually-hidden" th:for="*{writerName}">작성자</label>
+                <label class="visually-hidden" th:for="*{writerName}" th:text="#{label.boardSearch.writer}">작성자</label>
                 <div class="input-group">
-                    <div class="input-group-text">작성자</div>
+                    <div class="input-group-text" th:text="#{label.boardSearch.writer}">작성자</div>
                     <input type="text" th:field="*{writerName}" class="form-control" id="inlineFormInputGroupWriter"
                            placeholder="닉네임">
                 </div>
             </div>
             <div class="col-12">
-                <button type="submit" class="btn btn-primary">검색</button>
+                <button type="submit" class="btn btn-primary" th:text="#{button.search}">검색</button>
             </div>
         </form>
 
         <div class="row">
             <div class="col">
                 <button class="btn btn-primary float-end"
-                        onclick="location.href='/board/post'" type="button">새 글 작성
+                        onclick="location.href='/board/post'" type="button" th:text="#{button.board.create}">새 글 작성
                 </button>
             </div>
         </div>
@@ -44,13 +44,13 @@
         <table class="table">
             <thead>
             <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일자</th>
-                <th>수정일자</th>
-                <th>조회수</th>
-                <th>댓글</th>
+                <th th:text="#{label.board.id}">번호</th>
+                <th th:text="#{label.board.title}">제목</th>
+                <th th:text="#{label.board.writer}">작성자</th>
+                <th th:text="#{label.board.createDate}">작성일자</th>
+                <th th:text="#{label.board.updateDate}">수정일자</th>
+                <th th:text="#{label.board.views}">조회수</th>
+                <th th:text="#{label.board.comments}">댓글</th>
             </tr>
             </thead>
             <tbody>
