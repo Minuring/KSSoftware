@@ -75,13 +75,16 @@ public class BoardController {
 
     @GetMapping("/{id}/edit")
     public String editForm(@SessionAttribute(name = "loginUser", required = false) Member member,
-                           @PathVariable(value = "id") long id, Model model) {
+                           @PathVariable(value = "id") long id, Model model,
+                           RedirectAttributes redirectAttributes) {
         if (member == null) {
             return "redirect:/login/signIn";
         }
 
         Board findBoard = boardService.findById(id);
         if (!findBoard.getWriter().equals(member)) {
+            String message = messageSource.getMessage("permission", null, null);
+            redirectAttributes.addFlashAttribute("message", message);
             return "redirect:/board/{id}";
         }
 
@@ -95,6 +98,8 @@ public class BoardController {
                             RedirectAttributes redirectAttributes) {
         Board board = boardService.findById(id);
         if (!board.getWriter().equals(member)) {
+            String message = messageSource.getMessage("permission", null, null);
+            redirectAttributes.addFlashAttribute("message", message);
             return "redirect:/board/{id}";
         }
 
@@ -110,6 +115,8 @@ public class BoardController {
                               RedirectAttributes redirectAttributes) {
         Board board = boardService.findById(id);
         if (!board.getWriter().equals(member)) {
+            String message = messageSource.getMessage("permission", null, null);
+            redirectAttributes.addFlashAttribute("message", message);
             return "redirect:/board/{id}";
         }
         boardService.deleteBoard(id);
@@ -147,13 +154,15 @@ public class BoardController {
 
         Board board = boardService.findById(boardId);
         Comment comment = board.getComment(updateDto.getCommentId());
+        String message;
         if (comment.getWriter().equals(member)) {
             boardService.updateComment(boardId, updateDto);
 
-            String message = messageSource.getMessage("comment.updated", null, null);
-            redirectAttributes.addFlashAttribute("message", message);
+            message = messageSource.getMessage("comment.updated", null, null);
+        } else {
+            message = messageSource.getMessage("permission", null, null);
         }
-
+        redirectAttributes.addFlashAttribute("message", message);
         //작성자 아닐 때 예외처리
         return "redirect:/board/{id}";
     }
@@ -169,12 +178,14 @@ public class BoardController {
 
         Board board = boardService.findById(boardId);
         Comment comment = board.getComment(commentId);
+        String message;
         if (comment.getWriter().equals(member)) {
             boardService.deleteComment(boardId, commentId);
-
-            String message = messageSource.getMessage("comment.deleted", null, null);
-            redirectAttributes.addFlashAttribute("message", message);
+            message = messageSource.getMessage("comment.deleted", null, null);
+        } else {
+            message = messageSource.getMessage("permission", null, null);
         }
+        redirectAttributes.addFlashAttribute("message", message);
 
         //작성자 아닐 때 예외처리
         return "redirect:/board/{id}";
