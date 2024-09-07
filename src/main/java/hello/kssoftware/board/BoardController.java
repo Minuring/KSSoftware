@@ -2,10 +2,10 @@ package hello.kssoftware.board;
 
 import hello.kssoftware.board.dto.*;
 import hello.kssoftware.login.Member;
+import hello.kssoftware.FlashNotifier;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,7 +21,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
-    private final MessageSource messageSource;
+    private final FlashNotifier flashNotifier;
 
     @GetMapping
     public String boards(@ModelAttribute BoardSearchDto boardSearchDto, Model model) {
@@ -47,6 +47,7 @@ public class BoardController {
                            @ModelAttribute BoardCreateDto boardCreateDto) {
 
         if (member == null) {
+            flashNotifier.notify("required_login");
             return "redirect:/login/signIn";
         }
 
@@ -64,27 +65,25 @@ public class BoardController {
         }
 
         createDto.setWriter(member);
-
         Long boardId = boardService.createBoard(createDto);
         redirectAttributes.addAttribute("boardId", boardId);
+        flashNotifier.notify("message.created.board");
+        flashNotifier.notify("message.updated.board");
 
-        String message = messageSource.getMessage("board.created", null, null);
-        redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/board/{boardId}";
     }
 
     @GetMapping("/{id}/edit")
     public String editForm(@SessionAttribute(name = "loginUser", required = false) Member member,
-                           @PathVariable(value = "id") long id, Model model,
-                           RedirectAttributes redirectAttributes) {
+                           @PathVariable(value = "id") long id, Model model) {
         if (member == null) {
+            flashNotifier.notify("required_login");
             return "redirect:/login/signIn";
         }
 
         Board findBoard = boardService.findById(id);
         if (!findBoard.getWriter().equals(member)) {
-            String message = messageSource.getMessage("permission", null, null);
-            redirectAttributes.addFlashAttribute("message", message);
+            flashNotifier.notify("not_author");
             return "redirect:/board/{id}";
         }
 
@@ -94,100 +93,86 @@ public class BoardController {
 
     @PostMapping("/{id}/edit")
     public String editBoard(@SessionAttribute(name = "loginUser") Member member,
-                            @PathVariable(value = "id") Long id, BoardUpdateDto updateDto,
-                            RedirectAttributes redirectAttributes) {
+                            @PathVariable(value = "id") Long id, BoardUpdateDto updateDto) {
         Board board = boardService.findById(id);
         if (!board.getWriter().equals(member)) {
-            String message = messageSource.getMessage("permission", null, null);
-            redirectAttributes.addFlashAttribute("message", message);
+            flashNotifier.notify("not_author");
             return "redirect:/board/{id}";
         }
 
         boardService.updateBoard(id, updateDto);
-        String message = messageSource.getMessage("board.updated", null, null);
-        redirectAttributes.addFlashAttribute("message", message);
+        flashNotifier.notify("message.updated.board");
         return "redirect:/board/{id}";
     }
 
     @PostMapping("/{id}/delete")
     public String deleteBoard(@SessionAttribute(name = "loginUser") Member member,
-                              @PathVariable(value = "id") Long id,
-                              RedirectAttributes redirectAttributes) {
+                              @PathVariable(value = "id") Long id) {
         Board board = boardService.findById(id);
         if (!board.getWriter().equals(member)) {
-            String message = messageSource.getMessage("permission", null, null);
-            redirectAttributes.addFlashAttribute("message", message);
+            flashNotifier.notify("not_author");
             return "redirect:/board/{id}";
         }
-        boardService.deleteBoard(id);
 
-        String message = messageSource.getMessage("board.deleted", null, null);
-        redirectAttributes.addFlashAttribute("message", message);
+        boardService.deleteBoard(id);
+        flashNotifier.notify("message.deleted.board");
         return "redirect:/board";
     }
 
     @PostMapping("/{id}/comment/new")
     public String createComment(@SessionAttribute(name = "loginUser", required = false) Member member,
                                 @PathVariable(value = "id") Long boardId,
-                                CommentCreateDto commentCreateDto,
-                                RedirectAttributes redirectAttributes) {
+                                CommentCreateDto commentCreateDto) {
         if (member == null) {
+            flashNotifier.notify("required_login");
             return "redirect:/login/signIn";
         }
 
         commentCreateDto.setWriter(member);
         boardService.createComment(boardId, commentCreateDto);
-
-        String message = messageSource.getMessage("comment.created", null, null);
-        redirectAttributes.addFlashAttribute("message", message);
+        flashNotifier.notify("message.created.comment");
         return "redirect:/board/{id}";
     }
 
     @PostMapping("/{id}/comment/edit")
     public String editComment(@SessionAttribute(name = "loginUser", required = false) Member member,
                               @PathVariable("id") Long boardId,
-                              @ModelAttribute CommentUpdateDto updateDto,
-                              RedirectAttributes redirectAttributes) {
+                              @ModelAttribute CommentUpdateDto updateDto) {
         if (member == null) {
+            flashNotifier.notify("required_login");
             return "redirect:/login/signIn";
         }
 
         Board board = boardService.findById(boardId);
         Comment comment = board.getComment(updateDto.getCommentId());
-        String message;
         if (comment.getWriter().equals(member)) {
             boardService.updateComment(boardId, updateDto);
-
-            message = messageSource.getMessage("comment.updated", null, null);
+            flashNotifier.notify("message.updated.comment");
         } else {
-            message = messageSource.getMessage("permission", null, null);
+            flashNotifier.notify("not_author");
         }
-        redirectAttributes.addFlashAttribute("message", message);
-        //작성자 아닐 때 예외처리
+
         return "redirect:/board/{id}";
     }
 
     @PostMapping("/{id}/comment/delete")
     public String editComment(@SessionAttribute(name = "loginUser", required = false) Member member,
                               @PathVariable("id") Long boardId,
-                              @RequestParam(name = "commentId") Long commentId,
-                              RedirectAttributes redirectAttributes) {
+                              @RequestParam(name = "commentId") Long commentId) {
         if (member == null) {
+            flashNotifier.notify("required_login");
             return "redirect:/login/signIn";
         }
 
         Board board = boardService.findById(boardId);
         Comment comment = board.getComment(commentId);
-        String message;
         if (comment.getWriter().equals(member)) {
             boardService.deleteComment(boardId, commentId);
-            message = messageSource.getMessage("comment.deleted", null, null);
+            flashNotifier.notify("message.deleted.comment");
         } else {
-            message = messageSource.getMessage("permission", null, null);
+            flashNotifier.notify("not_author");
         }
-        redirectAttributes.addFlashAttribute("message", message);
 
-        //작성자 아닐 때 예외처리
         return "redirect:/board/{id}";
     }
 }

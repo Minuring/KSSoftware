@@ -15,7 +15,7 @@
             <small>now</small>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-        <div class="toast-body" id="toast-message" th:text="${message}">
+        <div th:each="message : ${messages}" class="toast-body" id="toast-message" th:text="${message}">
         </div>
     </div>
 </div>
@@ -23,8 +23,8 @@
 
 <script th:fragment="notification_script" th:inline="javascript">
     window.onload = function () {
-        var messageCode = [[${message}]];
-        if (messageCode) {
+        var messages = [[${messages}]];
+        if (messages) {
             triggerToast();
         }
     }
