@@ -2,33 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
-<head>
-    <style layout:fragment="css">
-    </style>
-</head>
 
 <div class="container-md mb-lg-5" layout:fragment="content">
 
     <div class="py-5 text-center">
-        <h2>글 수정</h2>
+        <h2 th:text="#{page.editBoard}">글 수정</h2>
     </div>
 
     <form id="editForm" th:object="${board}" method="post">
         <div class="container text-center mb-lg-4">
             <div class="row align-items-start">
                 <div class="col-sm-1">
-                    <label for="boardId">게시글 ID</label>
+                    <label for="boardId" th:text="#{label.board.id}">게시글 ID</label>
                     <input type="text" id="boardId" name="boardId" class="form-control bg-secondary-subtle" value="1"
                            th:value="*{id}" readonly>
                 </div>
                 <div class="col-sm-2">
-                    <label for="writer">작성자</label>
+                    <label for="writer" th:text="#{label.board.writer}">작성자</label>
                     <input type="text" id="writer" name="writer" class="form-control bg-secondary-subtle"
                            th:value="${board.writer.name} + ' (' + '***' + ${board.writer.id.substring(3)} + ')'"
                            readonly>
                 </div>
                 <div class="col-lg">
-                    <label for="title">제목</label>
+                    <label for="title" th:text="#{label.board.title}">제목</label>
                     <input type="text" id="title" name="title" class="form-control" value="제목A"
                            th:value="*{title}" required>
                 </div>
@@ -48,18 +44,20 @@
         <div class="row">
             <div class="col">
                 <button class="w-100 btn btn-primary btn-lg" type="submit"
-                        th:onclick="|javascript:setAction('/board/' + '${board.id}' + '/edit')|">저장
+                        th:onclick="|javascript:setAction('/board/' + '${board.id}' + '/edit')|"
+                        th:text="#{button.save}">저장
                 </button>
             </div>
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg" onclick="location.href=`/board`"
                         th:onclick="|location.href='@{/board/{boardId}(boardId=${board.id})}'|"
-                        type="button">취소
+                        type="button"
+                        th:text="#{button.cancel}">취소
                 </button>
             </div>
             <div class="col">
                 <button th:onclick="|javascript:setAction('/board/' + '${board.id}' + '/delete')|"
-                        class="w-100 btn btn-danger btn-lg" type="submit">삭제
+                        class="w-100 btn btn-danger btn-lg" type="submit" th:text="#{button.delete}">삭제
                 </button>
             </div>
         </div>
