@@ -22,16 +22,6 @@ public class LoginController {
     private final MemberService memberService;
     private final MemberRepository jpaMemberRepository;
 
-    @GetMapping("/")
-    public String home(@Login Member loginUser) {
-        if (loginUser != null) {
-            System.out.println(loginUser);
-            return "redirect:/";
-        } else{
-            return "redirect:/login/signIn";
-        }
-    }
-
     @GetMapping("/signIn")
     public String signInForm(Model model) {
         model.addAttribute("memberLoginDto", new MemberLoginDto());
@@ -75,8 +65,7 @@ public class LoginController {
     }
 
     @GetMapping("/myPage")
-    public String myPage(@Login Member member, Model model) {
-        model.addAttribute("isLoggedIn", true);
+    public String myPage() {
         return "login/myPage";
     }
 

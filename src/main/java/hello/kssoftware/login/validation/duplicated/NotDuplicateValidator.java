@@ -23,10 +23,7 @@ public class NotDuplicateValidator implements ConstraintValidator<NotDuplicate, 
         if (memberService.isUserIdExists(s)) {
             return false;
         }
-        if (memberService.isUserNameExists(s)) {
-            return false;
-        }
-        return true;
+        return !memberService.isUserNameExists(s);
     }
 
 }
