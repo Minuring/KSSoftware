@@ -1,15 +1,17 @@
 package hello.kssoftware.login.dto;
 
-import jakarta.validation.constraints.NotEmpty;
+import hello.kssoftware.login.validation.match.Match;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
+@Match
 public class MemberLoginDto {
 
-    @NotEmpty(message = "아이디를 입력하세요.")
+    @NotBlank
     private String id;
 
-    @NotEmpty(message = "비밀번호를 입력하세요.")
+    @NotBlank
     private String password;
 }

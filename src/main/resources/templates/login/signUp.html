@@ -7,55 +7,61 @@
         .container {
             max-width: 560px;
         }
+
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
     </style>
 </head>
 
 <div class="container" layout:fragment="content">
 
     <div class="py-5 text-center">
-        <h2>회원 가입</h2>
+        <h2 th:text="#{label.logIn.signUp}">회원 가입</h2>
     </div>
 
     <form action="/login/signUp"  th:object="${memberCreateDto}" method="post">
-
-        <div th:if="${param.error}">
-            <div class="alert alert-danger">
-                아이디 또는 닉네임 중복입니다
-            </div>
-        </div>
-
         <div>
-            <label th:for="Id">아이디</label>
-            <input type="text" th:field="*{id}" class="form-control" placeholder="아이디를 입력하세요">
+            <label for="Id" th:text="#{label.logIn.signUp.id}">아이디</label>
+            <input type="text" id="Id" th:field="*{id}"
+                   th:errorclass="field-error" class="form-control" placeholder="아이디를 입력하세요">
+            <div class="field-error" th:if="${!#fields.errors('id').isEmpty()}" th:text="${#fields.errors('id').size()} == 1 ? ${#fields.errors('id').get(0)} : #{NotBlank.memberCreateDto.id}"/>
         </div>
         <div>
-            <label th:for="password">비밀번호</label>
-            <input type="text" th:field="*{password}" class="form-control" placeholder="비밀번호를 입력하세요">
+            <label for="password" th:text="#{label.logIn.signUp.password}">비밀번호</label>
+            <input type="password" id="password" th:field="*{password}"
+                   th:errorclass="field-error" class="form-control" placeholder="비밀번호를 입력하세요">
+            <div class="field-error" th:errors="*{password}">비밀번호오류</div>
         </div>
         <div>
-            <label th:for="Name">닉네임</label>
-            <input type="text" th:field="*{name}"  class="form-control" placeholder="닉네임을 입력하세요">
+            <label for="name" th:text="#{label.logIn.signUp.name}">닉네임</label>
+            <input type="text" id="name" th:field="*{name}"
+                   th:errorclass="field-error" class="form-control" placeholder="닉네임을 입력하세요">
+            <div class="field-error" th:if="${!#fields.errors('name').isEmpty()}" th:text="${#fields.errors('name').size()} == 1 ? ${#fields.errors('name').get(0)} : #{NotBlank.memberCreateDto.name}"/>
         </div>
         <div>
-            <label th:for="Number">학번</label>
-            <input type="text" th:field="*{number}"  class="form-control" placeholder="학번을 입력하세요">
+            <label for="number" th:text="#{label.logIn.signUp.number}">학번</label>
+            <input type="text" id="number" th:field="*{number}"
+                   th:errorclass="field-error" class="form-control" placeholder="학번을 입력하세요">
+            <div class="field-error" th:errors="*{number}">학번 오류</div>
         </div>
 
         <hr class="my-4">
 
         <div class="row">
             <div class="col">
-                <button class="w-100 btn btn-primary btn-lg" type="submit">등록</button>
+                <button class="w-100 btn btn-primary btn-lg" type="submit"
+                th:text="#{button.submit}">등록</button>
             </div>
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg"
                         onclick="location.href='index.html'"
                         th:onclick="|location.href='@{/}'|"
+                        th:text="#{button.cancel}"
                         type="button">취소
                 </button>
             </div>
         </div>
-
-    </form>
-
+</form>
 </div>
