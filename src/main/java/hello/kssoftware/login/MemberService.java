@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final JpaMemberRepository jpaMemberRepository;
+    private final MemberRepository jpaMemberRepository;
 
     public void join(Member member) {
         jpaMemberRepository.save(member);
@@ -31,13 +31,6 @@ public class MemberService {
         return false;
     }
 
-    public boolean validateLogin(String userId, String pwd) {
-        if (jpaMemberRepository.findUserId(userId).isEmpty()) {
-            return false;
-        }
-        return jpaMemberRepository.findUserId(userId).get().getId().equals(userId) &&
-                jpaMemberRepository.findUserId(userId).get().getPassword().equals(pwd);
-    }
 
     public List<Member> findMembers() {
         return jpaMemberRepository.findAll();
