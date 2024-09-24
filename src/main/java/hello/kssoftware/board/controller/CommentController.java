@@ -41,11 +41,11 @@ public class CommentController {
     @PostMapping("/{id}/comment/edit")
     public String updateComment(@Login Member member,
                                 @PathVariable("id") Long boardId,
-                                @RequestParam("commentId") Long commentId,
                                 @ModelAttribute CommentUpdateDto updateDto) {
 
         Board board = boardService.findById(boardId);
-        Comment comment = board.getComment(commentId);
+        Comment comment = board.getComment(updateDto.getCommentId());
+        updateDto.setBoardId(boardId);
 
         if (member.equals(comment.getWriter())) {
             commentService.updateComment(updateDto);
