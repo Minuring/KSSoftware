@@ -6,6 +6,7 @@ import hello.kssoftware.board.entity.Comment;
 import hello.kssoftware.board.dto.*;
 import hello.kssoftware.login.Member;
 import hello.kssoftware.FlashNotifier;
+import hello.kssoftware.login.argumentresolver.Login;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,14 +49,14 @@ public class BoardController {
     }
 
     @GetMapping("/post")
-    public String getBoardCreateForm(@SessionAttribute(name = "loginUser", required = false) Member member,
+    public String getBoardCreateForm(@Login Member member,
                                      @ModelAttribute BoardCreateDto boardCreateDto) {
 
         return "board/post";
     }
 
     @PostMapping("/post")
-    public String createBoard(@SessionAttribute(name = "loginUser") Member member,
+    public String createBoard(@Login Member member,
                               @Valid BoardCreateDto createDto,
                               BindingResult result,
                               RedirectAttributes redirectAttributes) {
@@ -73,8 +74,8 @@ public class BoardController {
     }
 
     @GetMapping("/{id}/edit")
-    public String getBoardUpdateForm(@SessionAttribute(name = "loginUser", required = false) Member member,
-                                     @PathVariable(value = "id") long id, Model model) {
+    public String getBoardUpdateForm(@Login Member member,
+                                     @PathVariable(value = "id") Long id, Model model) {
 
         Board board = boardService.findById(id);
 
@@ -90,7 +91,7 @@ public class BoardController {
     }
 
     @PostMapping("/{id}/edit")
-    public String updateBoard(@SessionAttribute(name = "loginUser") Member member,
+    public String updateBoard(@Login Member member,
                               @PathVariable(value = "id") Long id, BoardUpdateDto updateDto) {
 
         Board board = boardService.findById(id);
@@ -107,7 +108,7 @@ public class BoardController {
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteBoard(@SessionAttribute(name = "loginUser") Member member,
+    public String deleteBoard(@Login Member member,
                               @PathVariable(value = "id") Long id) {
 
         Board board = boardService.findById(id);
