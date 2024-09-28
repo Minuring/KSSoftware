@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter @Setter
 public class MemberCreateDto {
 
-    @NotBlank()
+    @NotBlank
     @Size(min = 5)
     @NotDuplicate
     private String id;

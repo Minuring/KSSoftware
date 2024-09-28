@@ -17,7 +17,7 @@
 <div class="container" layout:fragment="content">
 
     <div class="py-5 text-center">
-        <h2 th:text="#{label.logIn.signIn}">로그인</h2>
+        <h2 th:text="#{label.login.signIn}">로그인</h2>
     </div>
     <form action="/" th:object="${memberLoginDto}" th:action method="post">
 
@@ -26,20 +26,20 @@
         </div>
 
         <div class="mb-3">
-            <label for="Id" th:text="#{label.logIn.signIn.id}">사용자 ID</label>
+            <label for="Id" th:text="#{label.login.signIn.id}">사용자 ID</label>
             <input type="text" id="Id" th:field="*{id}"
                    th:errorclass="field-error" class="form-control" placeholder="아이디를 입력하세요">
             <div class="field-error" th:if="${!#fields.errors('id').isEmpty()}" th:text="${#fields.errors('id').size()} == 1 ? ${#fields.errors('id').get(0)} : #{NotBlank.memberLoginDto.id}"/>
         </div>
 
         <div class="mb-3">
-            <label for="password" th:text="#{label.logIn.signIn.password}">비밀번호</label>
+            <label for="password" th:text="#{label.login.signIn.password}">비밀번호</label>
             <input type="password" id="password" th:field="*{password}"
                    th:errorclass="field-error" class="form-control" placeholder="비밀번호를 입력하세요">
             <div class="field-error" th:errors="*{password}">비밀번호오류</div>
         </div>
 
-        <button type="submit" class="btn btn-primary" th:text="#{button.logIn}"}>로그인</button>
+        <button type="submit" class="btn btn-primary" th:text="#{button.login}"}>로그인</button>
         <button class="btn btn-primary float-end"
                 onclick="location.href='/login/signUp'"
                 type="button"
