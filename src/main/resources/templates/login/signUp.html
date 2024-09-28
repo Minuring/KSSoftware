@@ -18,30 +18,30 @@
 <div class="container" layout:fragment="content">
 
     <div class="py-5 text-center">
-        <h2 th:text="#{label.logIn.signUp}">회원 가입</h2>
+        <h2 th:text="#{label.login.signUp}">회원 가입</h2>
     </div>
 
     <form action="/login/signUp"  th:object="${memberCreateDto}" method="post">
         <div>
-            <label for="Id" th:text="#{label.logIn.signUp.id}">아이디</label>
+            <label for="Id" th:text="#{label.login.signUp.id}">아이디</label>
             <input type="text" id="Id" th:field="*{id}"
                    th:errorclass="field-error" class="form-control" placeholder="아이디를 입력하세요">
             <div class="field-error" th:if="${!#fields.errors('id').isEmpty()}" th:text="${#fields.errors('id').size()} == 1 ? ${#fields.errors('id').get(0)} : #{NotBlank.memberCreateDto.id}"/>
         </div>
         <div>
-            <label for="password" th:text="#{label.logIn.signUp.password}">비밀번호</label>
+            <label for="password" th:text="#{label.login.signUp.password}">비밀번호</label>
             <input type="password" id="password" th:field="*{password}"
                    th:errorclass="field-error" class="form-control" placeholder="비밀번호를 입력하세요">
             <div class="field-error" th:errors="*{password}">비밀번호오류</div>
         </div>
         <div>
-            <label for="name" th:text="#{label.logIn.signUp.name}">닉네임</label>
+            <label for="name" th:text="#{label.login.signUp.name}">닉네임</label>
             <input type="text" id="name" th:field="*{name}"
                    th:errorclass="field-error" class="form-control" placeholder="닉네임을 입력하세요">
             <div class="field-error" th:if="${!#fields.errors('name').isEmpty()}" th:text="${#fields.errors('name').size()} == 1 ? ${#fields.errors('name').get(0)} : #{NotBlank.memberCreateDto.name}"/>
         </div>
         <div>
-            <label for="number" th:text="#{label.logIn.signUp.number}">학번</label>
+            <label for="number" th:text="#{label.login.signUp.number}">학번</label>
             <input type="text" id="number" th:field="*{number}"
                    th:errorclass="field-error" class="form-control" placeholder="학번을 입력하세요">
             <div class="field-error" th:errors="*{number}">학번 오류</div>
