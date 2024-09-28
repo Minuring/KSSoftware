@@ -8,6 +8,7 @@ import hello.kssoftware.board.dto.CommentUpdateDto;
 import hello.kssoftware.board.service.BoardService;
 import hello.kssoftware.board.service.CommentService;
 import hello.kssoftware.login.Member;
+import hello.kssoftware.login.argumentresolver.Login;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,7 @@ public class CommentController {
     private final BoardService boardService;
 
     @PostMapping("/{id}/comment/new")
-    public String createComment(@SessionAttribute(name = "loginUser", required = false) Member member,
+    public String createComment(@Login Member member,
                                 @PathVariable(value = "id") Long boardId,
                                 @ModelAttribute CommentCreateDto createDto) {
 
@@ -38,13 +39,13 @@ public class CommentController {
     }
 
     @PostMapping("/{id}/comment/edit")
-    public String updateComment(@SessionAttribute(name = "loginUser", required = false) Member member,
+    public String updateComment(@Login Member member,
                                 @PathVariable("id") Long boardId,
-                                @RequestParam("commentId") Long commentId,
                                 @ModelAttribute CommentUpdateDto updateDto) {
 
         Board board = boardService.findById(boardId);
-        Comment comment = board.getComment(commentId);
+        Comment comment = board.getComment(updateDto.getCommentId());
+        updateDto.setBoardId(boardId);
 
         if (member.equals(comment.getWriter())) {
             commentService.updateComment(updateDto);
@@ -58,7 +59,7 @@ public class CommentController {
     }
 
     @PostMapping("/{id}/comment/delete")
-    public String deleteComment(@SessionAttribute(name = "loginUser", required = false) Member member,
+    public String deleteComment(@Login Member member,
                                 @PathVariable("id") Long boardId,
                                 @RequestParam(name = "commentId") Long commentId) {
 

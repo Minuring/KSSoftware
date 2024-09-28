@@ -33,9 +33,8 @@ public class Comment {
     private LocalDateTime updateDate;
 
 
-    public void update(String content, boolean anonymousYn, LocalDateTime updateDate) {
+    public void update(String content, LocalDateTime updateDate) {
         this.content = content;
-        this.anonymousYn = anonymousYn;
         this.updateDate = updateDate;
     }
 

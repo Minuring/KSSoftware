@@ -42,7 +42,7 @@ public class CommentService {
         Board board = boardRepository.findById(boardId);
         Comment comment = board.getComment(commentId);
 
-        comment.update(dto.getContent(), dto.getAnonymousYn(), now());
+        comment.update(dto.getContent(), now());
     }
 
     public void deleteComment(Long boardId, Long commentId) {
