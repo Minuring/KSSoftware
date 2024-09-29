@@ -1,7 +1,7 @@
 package hello.kssoftware.board.repository;
 
+import hello.kssoftware.board.dto.BoardDto;
 import hello.kssoftware.board.entity.Board;
-import hello.kssoftware.board.dto.BoardSearchDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
@@ -30,20 +30,20 @@ public class BoardRepository{
         em.remove(findBoard);
     }
 
-    public List<Board> findAll(BoardSearchDto boardSearchDto) {
+    public List<Board> findAll(BoardDto.Search search) {
 
         String jpql = "select b From Board b left join fetch b.writer w left join fetch b.comments c ";
         boolean isFirstCondition = true;
 
         //제목으로 검색
-        if (StringUtils.hasText(boardSearchDto.getTitle())) {
-            jpql += " where b.title like '%" + boardSearchDto.getTitle() + "%'";
+        if (StringUtils.hasText(search.getTitle())) {
+            jpql += " where b.title like '%" + search.getTitle() + "%'";
             isFirstCondition = false;
         }
         //작성자로 검색
-        if (StringUtils.hasText(boardSearchDto.getWriterName())) {
+        if (StringUtils.hasText(search.getWriterName())) {
             jpql += isFirstCondition ? " where" : " and";
-            jpql += " b.writer.name like '%" + boardSearchDto.getWriterName() + "%'";
+            jpql += " b.writer.name like '%" + search.getWriterName() + "%'";
         }
         TypedQuery<Board> query = em.createQuery(jpql, Board.class).setMaxResults(1000); //최대 1000건
         return query.getResultList();
