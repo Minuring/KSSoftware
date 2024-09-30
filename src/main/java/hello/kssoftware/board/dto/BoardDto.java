@@ -22,32 +22,32 @@ public abstract class BoardDto {
 
     @Getter @Setter
     public static class Create {
-        private Member writer;
+        protected Member writer;
         @NotEmpty(message = "제목을 입력하세요.")
-        private String title;
+        protected String title;
         @NotEmpty(message = "내용을 입력하세요.")
-        private String content;
+        protected String content;
     }
 
     @Getter @Setter
     public static class Update {
-        private Long id;
-        private String title;
-        private String content;
+        protected Long id;
+        protected String title;
+        protected String content;
     }
 
     // delete는 ID만 필요하므로 DTO를 만들지 않았음
 
     @Getter @Setter
     public static class Response {
-        private Long id;
-        private Member writer;
-        private String title;
-        private String content;
-        private LocalDateTime createDate;
-        private LocalDateTime updateDate;
-        private Integer views = 0;
-        private List<Comment> comments;
+        protected Long id;
+        protected Member writer;
+        protected String title;
+        protected String content;
+        protected LocalDateTime createDate;
+        protected LocalDateTime updateDate;
+        protected Integer views = 0;
+        protected List<Comment> comments;
 
         public Response(Board board) {
             this.id = board.getId();
