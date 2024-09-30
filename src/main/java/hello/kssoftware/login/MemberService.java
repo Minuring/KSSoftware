@@ -11,18 +11,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final MemberRepository jpaMemberRepository;
+    private final MemberRepository memberRepository;
 
     public void join(Member member) {
-        jpaMemberRepository.save(member);
+        memberRepository.save(member);
     }
 
     public boolean isUserIdExists(String userId) {
-        return jpaMemberRepository.findUserId(userId).isPresent();
+        return memberRepository.findUserId(userId).isPresent();
     }
 
     public boolean isUserNameExists(String userName) {
-        List<Member> members = jpaMemberRepository.findByUserName(userName);
+        List<Member> members = memberRepository.findByUserName(userName);
         for (Member member : members) {
             if (member.getName().equals(userName)) {
                 return true;
@@ -33,6 +33,6 @@ public class MemberService {
 
 
     public List<Member> findMembers() {
-        return jpaMemberRepository.findAll();
+        return memberRepository.findAll();
     }
 }

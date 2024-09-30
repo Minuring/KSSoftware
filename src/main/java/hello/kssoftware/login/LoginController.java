@@ -1,6 +1,5 @@
 package hello.kssoftware.login;
 
-import hello.kssoftware.login.argumentresolver.Login;
 import hello.kssoftware.login.dto.MemberCreateDto;
 import hello.kssoftware.login.dto.MemberLoginDto;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Optional;
 
 @Slf4j
@@ -20,7 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LoginController {
     private final MemberService memberService;
-    private final MemberRepository jpaMemberRepository;
+    private final MemberRepository memberRepository;
 
     @GetMapping("/signIn")
     public String signInForm(Model model) {
@@ -37,7 +37,7 @@ public class LoginController {
             return "login/signIn";
         }
 
-        Optional<Member> memberOptional = jpaMemberRepository.findUserId(memberLoginDto.getId());
+        Optional<Member> memberOptional = memberRepository.findUserId(memberLoginDto.getId());
         Member loginUser = memberOptional.get();
 
         HttpSession session = request.getSession();
@@ -60,7 +60,12 @@ public class LoginController {
             return "login/signUp";
         }
 
-        memberService.join(Member.createMember(memberCreateDto));
+        Member member = Member.createMember(memberCreateDto.getId(),
+                memberCreateDto.getName(),
+                memberCreateDto.getPassword(),
+                memberCreateDto.getNumber());
+        memberService.join(member);
+
         return "index";
     }
 
