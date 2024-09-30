@@ -1,6 +1,5 @@
 package hello.kssoftware.login;
 
-import hello.kssoftware.login.dto.MemberCreateDto;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -28,13 +27,16 @@ public class Member {
     @Column(nullable = false)
     private Integer number;
 
-    public static Member createMember(MemberCreateDto memberCreateDto) {
+    protected Member() {}
+
+    public static Member createMember(String id, String name, String password, Integer number) {
         Member member = new Member();
-        member.id = memberCreateDto.getId();
-        member.name = memberCreateDto.getName();
-        member.password = memberCreateDto.getPassword();
-        member.number = memberCreateDto.getNumber();
+        member.id = id;
+        member.name = name;
+        member.password = password;
+        member.number = number;
         return member;
     }
+
 }
 
