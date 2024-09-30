@@ -1,9 +1,8 @@
 package hello.kssoftware.board.service;
 
+import hello.kssoftware.board.dto.CommentDto;
 import hello.kssoftware.board.entity.Board;
 import hello.kssoftware.board.entity.Comment;
-import hello.kssoftware.board.dto.CommentCreateDto;
-import hello.kssoftware.board.dto.CommentUpdateDto;
 import hello.kssoftware.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +20,7 @@ public class CommentService {
 
     private final BoardRepository boardRepository;
 
-    public void createComment(CommentCreateDto dto) {
+    public void createComment(CommentDto.Create dto) {
         Long boardId = dto.getBoardId();
         Board board = boardRepository.findById(boardId);
 
@@ -36,7 +35,7 @@ public class CommentService {
         board.addComment(comment);
     }
 
-    public void updateComment(CommentUpdateDto dto) {
+    public void updateComment(CommentDto.Update dto) {
         Long commentId = dto.getCommentId();
         Long boardId = dto.getBoardId();
         Board board = boardRepository.findById(boardId);

@@ -1,5 +1,7 @@
 package hello.kssoftware;
 
+import hello.kssoftware.board.interceptor.AuthorMatchCheckInterceptor;
+import hello.kssoftware.board.repository.BoardRepository;
 import hello.kssoftware.login.argumentresolver.LoginMemberArgumentResolver;
 import hello.kssoftware.login.interceptor.LoginCheckInterceptor;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import java.util.List;
 public class WebConfig implements WebMvcConfigurer {
 
     private final FlashNotifier flashNotifier;
+    private final BoardRepository boardRepository;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
@@ -28,5 +31,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/", "/login/signIn","/login/signUp", "/css/**",
                         "/board","/*.ico", "/error","/*.png","/img/**", "/js/**");
+
+        registry.addInterceptor(new AuthorMatchCheckInterceptor(boardRepository, flashNotifier))
+                .order(2)
+                .addPathPatterns("/board/**/edit", "/board/**/delete");
     }
 }
