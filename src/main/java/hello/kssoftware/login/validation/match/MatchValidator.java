@@ -25,10 +25,8 @@ public class MatchValidator implements ConstraintValidator<Match, Object> {
         if (id.isEmpty() || password.isEmpty()) {
             return true;
         }
-        if (memberRepository.findUserId(id).isEmpty()) {
-            return false;
-        }
-        return memberRepository.findUserId(id).get().getId().equals(id) &&
-                memberRepository.findUserId(id).get().getPassword().equals(password);
+
+        return memberRepository.findById(id).isPresent() &&
+                memberRepository.findById(id).get().getPassword().equals(password);
     }
 }

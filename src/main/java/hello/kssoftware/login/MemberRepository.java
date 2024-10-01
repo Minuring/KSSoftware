@@ -23,8 +23,8 @@ public class MemberRepository {
         em.persist(member);
     }
 
-    public Optional<Member> findUserId(String userId){
-        Member member = em.find(Member.class, userId);
+    public Optional<Member> findById(String id) {
+        Member member = em.find(Member.class, id);
         return Optional.ofNullable(member);
     }
 
@@ -33,10 +33,12 @@ public class MemberRepository {
                 .getResultList();
     }
 
-    public List<Member> findByUserName(String userName) {
-        return em.createQuery("select m from Member m where m.name =:userName", Member.class)
-                .setParameter("userName", userName)
-                .getResultList();
+    public Optional<Member> findByName(String name) {
+        return em.createQuery("select m from Member m where m.name =:name", Member.class)
+                .setParameter("name", name)
+                .getResultList()
+                .stream()
+                .findAny();
     }
 
 }

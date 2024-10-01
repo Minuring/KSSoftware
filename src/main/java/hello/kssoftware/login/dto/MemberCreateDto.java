@@ -1,6 +1,7 @@
 package hello.kssoftware.login.dto;
 
-import hello.kssoftware.login.validation.duplicated.NotDuplicate;
+import hello.kssoftware.login.validation.duplicated.NotDuplicateId;
+import hello.kssoftware.login.validation.duplicated.NotDuplicateName;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,14 +11,14 @@ public class MemberCreateDto {
 
     @NotBlank
     @Size(min = 5)
-    @NotDuplicate
+    @NotDuplicateId
     private String id;
 
     @NotBlank
     private String password;
 
     @NotBlank
-    @NotDuplicate
+    @NotDuplicateName
     @Size(min = 5)
     private String name;
 
