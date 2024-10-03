@@ -17,21 +17,16 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public boolean isUserIdExists(String userId) {
-        return memberRepository.findUserId(userId).isPresent();
+    public void updatePassword(String id, String password) {
+        Member member = memberRepository.findById(id).orElseThrow();
+        member.setPassword(password);
+    }
+    public void updateName(String id, String name) {
+        Member member = memberRepository.findById(id).orElseThrow();
+        member.setName(name);
     }
 
-    public boolean isUserNameExists(String userName) {
-        List<Member> members = memberRepository.findByUserName(userName);
-        for (Member member : members) {
-            if (member.getName().equals(userName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
+    @Transactional(readOnly = true)
     public List<Member> findMembers() {
         return memberRepository.findAll();
     }

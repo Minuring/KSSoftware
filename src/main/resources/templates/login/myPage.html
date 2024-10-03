@@ -2,21 +2,217 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
-<head>
-    <style layout:fragment="css">
-        .container {
-            max-width: 560px;
-        }
-    </style>
-</head>
 
 <div class="container" layout:fragment="content">
+    <script>
+        function showModal(id) {
+            const myModal = new bootstrap.Modal(document.getElementById(id));
+            myModal.show();
+        };
+    </script>
 
-    <div class="py-5 text-center">
-        <h2 th:text="#{label.logout}">로그아웃</h2>
+    <div class="py-5 text-center d-flex">
+        <h2 th:text="#{label.myPage}" class="d-flex p-2 me-auto">마이페이지</h2>
+        <form action="/login/logout" class="d-flex justify-content-end p-2" method="post">
+            <button type="submit" class="btn btn-secondary btn-lg" th:text="#{label.logout}"></button>
+        </form>
     </div>
-    <form action="/login/logout" method="post">
-        <button type="submit" th:text="#{button.logout}">로그아웃</button>
+    <form class="form-control" th:object="${member}">
+        <div class="mb-3 row">
+            <label th:for="*{id}" class="col-sm-2 col-form-label fw-bold" th:text="#{label.login.signUp.id}"></label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" th:field="*{id}" th:value="*{id}">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label th:for="*{name}" class="col-sm-2 col-form-label fw-bold"
+                   th:text="#{label.login.signUp.name}"></label>
+            <div class="col-sm-10">
+                <a href="" data-bs-toggle="modal" data-bs-target="#changeNameModal" class="d-flex">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="mt-3 pb-1 bi bi-pencil" viewBox="0 0 16 16">
+                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                    </svg>
+                    <input type="text" readonly class="form-control-plaintext" th:field="*{name}">
+                </a>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label th:for="*{number}" class="col-sm-2 col-form-label fw-bold"
+                   th:text="#{label.login.signUp.number}"></label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" th:field="*{number}" th:value="*{number}">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label fw-bold" th:text="#{label.login.signUp.password}"></label>
+            <div class="col-auto">
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#changePasswordModal">
+                    변경하기
+                </button>
+            </div>
+        </div>
     </form>
+
+
+    <hr>
+    <!--  글, 댓글 목록   -->
+    <div class="container row p-sm-3">
+
+        <div class="col-6 rounded border border-success p-2 mb-2 border-opacity-25">
+            <h3 class="d-flex p-2 ms-auto">내가 쓴 글</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th th:text="#{label.board.title}">제목</th>
+                    <th th:text="#{label.board.createDate}">작성일자</th>
+                    <th th:text="#{label.board.views}">조회수</th>
+                    <th th:text="#{label.board.comments}">댓글</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="board : ${boards}">
+                    <td><a href="board.html" th:href="@{/board/{boardId}(boardId=${board.id})}"
+                           th:text="${board.title}">제목</a></td>
+                    <td th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="${board.views}">조회수</td>
+                    <td th:text="${board.comments.size()}">조회수</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="ms-auto col-5 rounded border border-success p-2 mb-2 border-opacity-25">
+            <h3 class="d-flex p-2 me-auto">내가 쓴 댓글</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th th:text="#{label.myPage.board.title}">글 제목</th>
+                    <th th:text="#{label.board.createDate}">작성일자</th>
+                    <th th:text="#{label.myPage.comment.content}">댓글 내용</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="comment : ${comments}">
+                    <td><a href="board.html" th:href="@{/board/{boardId}(boardId=${comment.board.id})}"
+                           th:text="${comment.board.title}">글 제목</a></td>
+                    <td th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="${comment.content}">댓글 내용</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+    <!-- 비밀번호 변경 폼 -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form action="/login/myPage/changePassword" th:object="${passwordChangeDto}" method="post">
+                    <script th:inline="javascript">
+                        if ([[${#fields.hasAnyErrors()}]]) {
+                            showModal('changePasswordModal');
+                        }
+                    </script>
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel" th:text="#{label.password.change}"></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div th:if="${#fields.hasGlobalErrors()}">
+                            <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">로그인 실패
+                                메시지</p>
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <div class="input-group">
+                                <div class="input-group-text w-25" th:text="#{label.password.old}"></div>
+                                <input type="password" class="form-control" th:errorclass="is-invalid"
+                                       th:field="*{oldPassword}"
+                                       placeholder="*******">
+                                <div class="invalid-feedback" th:errors="*{oldPassword}"></div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="input-group">
+                                <div class="input-group-text w-25" th:text="#{label.password.new}"></div>
+                                <input type="password" class="form-control" th:errorclass="is-invalid"
+                                       th:field="*{newPassword}"
+                                       placeholder="*******">
+                                <div class="invalid-feedback" th:errors="*{newPassword}"></div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="input-group">
+                                <div class="input-group-text w-25 has-validation"
+                                     th:text="#{label.password.confirm}"></div>
+                                <input type="password" class="form-control" th:errorclass="is-invalid"
+                                       th:field="*{confirmPassword}"
+                                       placeholder="*******">
+                                <div class="invalid-feedback" th:errors="*{confirmPassword}"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                th:text="#{button.cancel}"></button>
+                        <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- 닉네임 변경 폼 -->
+    <div class="modal fade" id="changeNameModal" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form action="/login/myPage/changeName" method="post" th:object="${nameChangeDto}">
+                    <script th:inline="javascript">
+                        if ([[${#fields.hasAnyErrors()}]]) {
+                            showModal('changeNameModal');
+                        }
+                    </script>
+
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" th:text="#{label.name.change}"></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row row-cols-lg-auto g-3 align-items-center">
+                            <div class="col-12">
+                                <label class="visually-hidden">name</label>
+                                <div class="input-group">
+                                    <div class="input-group-text" th:text="#{label.name.new}"></div>
+                                    <input type="text" class="form-control" th:errorclass="is-invalid"
+                                           th:field="*{name}"
+                                           placeholder="새 닉네임을 입력하세요.">
+                                    <div class="invalid-feedback" th:errors="*{name}"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                th:text="#{button.cancel}"></button>
+                        <button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
 
 </div>
