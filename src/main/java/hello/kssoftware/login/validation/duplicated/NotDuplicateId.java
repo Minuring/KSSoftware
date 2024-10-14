@@ -8,10 +8,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.FIELD})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = NotDuplicateValidator.class)
-public @interface NotDuplicate {
+@Constraint(validatedBy = NotDuplicateIdValidator.class)
+public @interface NotDuplicateId {
 
     String message() default "중복입니다.";
     Class<?>[] groups() default {};
