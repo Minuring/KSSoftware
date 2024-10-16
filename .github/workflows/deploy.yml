@@ -48,6 +48,7 @@ jobs:
         script: |
           ./kill.sh
           ./build.sh
+          exit
 
     - name: Remove Github Actions IP from security group
       run: |
