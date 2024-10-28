@@ -1,11 +1,19 @@
 package hello.kssoftware.board.free.dto;
 
-import hello.kssoftware.board.dto.BoardDto;
-import hello.kssoftware.board.entity.Board;
+import hello.kssoftware.board.common.BoardDto;
+import hello.kssoftware.board.common.Board;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter @Setter
 public class FreeBoardDto extends BoardDto {
+
+    public static Class<? extends BoardDto> Create;
+
+    @Getter @Setter
+    public static class Search extends BoardDto.Search {
+        protected String type = "FreeBoard";
+    }
 
     @Getter @Setter
     public static class Create extends BoardDto.Create{}
