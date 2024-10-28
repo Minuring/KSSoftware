@@ -1,12 +1,10 @@
-package hello.kssoftware.board.free.dto;
+package hello.kssoftware.board.free.entity;
 
-import hello.kssoftware.board.entity.Board;
+import hello.kssoftware.board.common.Board;
 import hello.kssoftware.login.Member;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.*;
-
-import java.io.File;
 import java.time.LocalDateTime;
 
 @Getter
@@ -21,8 +19,6 @@ public class FreeBoard extends Board {
     }
 
     public void update(String title, String content, LocalDateTime updateDate) {
-        super.title = title;
-        super.content = content;
-        super.updateDate = updateDate;
+        super.update(title, content, updateDate);
     }
 }
