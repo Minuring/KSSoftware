@@ -1,9 +1,7 @@
-package hello.kssoftware.board.service;
+package hello.kssoftware.board.comment;
 
-import hello.kssoftware.board.dto.CommentDto;
-import hello.kssoftware.board.entity.Board;
-import hello.kssoftware.board.entity.Comment;
-import hello.kssoftware.board.repository.BoardRepository;
+import hello.kssoftware.board.common.Board;
+import hello.kssoftware.board.common.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

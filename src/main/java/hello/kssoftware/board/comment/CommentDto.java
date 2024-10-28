@@ -1,7 +1,6 @@
-package hello.kssoftware.board.dto;
+package hello.kssoftware.board.comment;
 
-import hello.kssoftware.board.entity.Board;
-import hello.kssoftware.board.entity.Comment;
+import hello.kssoftware.board.common.Board;
 import hello.kssoftware.login.Member;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;

@@ -1,11 +1,11 @@
-package hello.kssoftware.board.dto;
+package hello.kssoftware.board.common;
 
-import hello.kssoftware.board.entity.Board;
-import hello.kssoftware.board.entity.Comment;
+import hello.kssoftware.board.comment.Comment;
 import hello.kssoftware.login.Member;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,9 +18,11 @@ public abstract class BoardDto {
     public static class Search {
         private String title;
         private String writerName;
+        private String type;
     }
 
     @Getter @Setter
+    @ToString
     public static class Create {
         protected Member writer;
         @NotEmpty(message = "제목을 입력하세요.")
@@ -28,6 +30,7 @@ public abstract class BoardDto {
         @NotEmpty(message = "내용을 입력하세요.")
         protected String content;
     }
+
 
     @Getter @Setter
     public static class Update {
