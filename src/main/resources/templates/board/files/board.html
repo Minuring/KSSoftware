@@ -13,7 +13,7 @@
         <div class="col-2">
             <button class="btn btn-primary btn-lg"
                     onclick="location.href='edit.html'"
-                    th:onclick="|location.href='@{/board/{boardId}/edit(boardId=${board.id})}'|"
+                    th:onclick="|location.href='@{/board/files/{boardId}/edit(boardId=${board.id})}'|"
                     type="button"
                     th:text="#{button.board.update}">
                 글 수정
@@ -22,7 +22,7 @@
         <div class="col-2">
             <button class="btn btn-secondary btn-lg"
                     onclick="location.href='items.html'"
-                    th:onclick="|location.href='@{/board}'|"
+                    th:onclick="|location.href='@{/board/files}'|"
                     type="button"
                     th:text="#{button.board.list}">
                 목록으로
@@ -63,6 +63,14 @@
                        readonly>
             </div>
         </div>
+        <div class="row align-items-start mb-3">
+            <div class="col">
+                <label th:text="#{label.board.contentFile}">첨부파일</label>
+                <a th:if="${board.file}" th:href="|/board/files/attach/${board.id}|"
+                   class="form-control bg-secondary-subtle"
+                   th:text="${board.getFile().getUploadFileName()}" /><br/>
+            </div>
+        </div>
     </div>
 
     <hr class="my-4">
@@ -77,7 +85,7 @@
         <div class="card my-4">
             <h5 class="card-header" th:text="#{page.createComment}">댓글 작성하기 </h5>
             <div class="card-body">
-                <form role="form" th:action="@{/board/{boardId}/comment/new(boardId=${board.id})}"
+                <form role="form" th:action="@{/board/files/{boardId}/comment/new(boardId=${board.id})}"
                       th:object="${commentCreateDto}" method="post">
                     <textarea class="form-control" th:field="*{content}" rows="3" required></textarea>
                     <div class="form-group d-sm-flex mx-1 mb-1 align-items-center">
@@ -105,12 +113,12 @@
                 <form method="post" th:action="@{{boardId}/comment/delete(boardId=${board.id})}">
                     <div class="d-flex mb-0 top-0">
                         <strong class="d-sm-inline-flex mt-0 mb-sm-1 me-2"
-                                th:text="${comment.anonymousYn} ? '익명' : ${comment.writer.name} + ' (' + '***' + ${comment.writer.id.substring(3)} + ')'">Commenter Name</strong>
+                                th:text="${comment.anonymousYn} ? '익명' : ${comment.writer?.name} + ' (' + '***' + ${comment.writer.id.substring(3)} + ')'">Commenter Name</strong>
                         <p class="d-sm-inline-flex text-sm-end text-black-50"
                            th:text="${#temporals.format(comment.createDate, 'yyyy.MM.dd HH:mm')}"></p>
                         <button type="button" class="btn bg-white d-flex" data-bs-toggle="modal"
                                 data-bs-target="#editCommentModal"
-                                th:onclick="clickEditComment(/*[[${comment.id}]]*/, /*[[${comment.content}]]*/ );">
+                                th:onclick="clickEditComment(/*[[${comment?.id}]]*/, /*[[${comment?.content}]]*/ );">
 
                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20"
                                  class="bi bi-pencil-square d-sm-inline-flex top-0 mt-0" viewBox="0 0 16 16">
