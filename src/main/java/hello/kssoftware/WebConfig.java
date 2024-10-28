@@ -1,7 +1,7 @@
 package hello.kssoftware;
 
 import hello.kssoftware.board.interceptor.AuthorMatchCheckInterceptor;
-import hello.kssoftware.board.repository.BoardRepository;
+import hello.kssoftware.board.common.BoardRepository;
 import hello.kssoftware.login.argumentresolver.LoginMemberArgumentResolver;
 import hello.kssoftware.login.interceptor.LoginCheckInterceptor;
 import lombok.RequiredArgsConstructor;
