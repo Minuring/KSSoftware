@@ -21,19 +21,23 @@ public class Member {
     @Column(unique = true)
     private String name;
 
-    @Column(nullable = false)
+    @Column(columnDefinition="CHAR(64)")
     private String password;
+
+    @Column(columnDefinition="CHAR(32)")
+    private String salt;
 
     @Column(nullable = false)
     private Integer number;
 
     protected Member() {}
 
-    public static Member createMember(String id, String name, String password, Integer number) {
+    public static Member createMember(String id, String name, String password, String salt, Integer number) {
         Member member = new Member();
         member.id = id;
         member.name = name;
         member.password = password;
+        member.salt = salt;
         member.number = number;
         return member;
     }

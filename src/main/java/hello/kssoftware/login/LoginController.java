@@ -11,6 +11,7 @@ import hello.kssoftware.login.dto.MemberCreateDto;
 import hello.kssoftware.login.dto.MemberLoginDto;
 import hello.kssoftware.login.dto.NameChangeDto;
 import hello.kssoftware.login.dto.PasswordChangeDto;
+import hello.kssoftware.login.encrypt.PasswordEncoder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -64,17 +65,20 @@ public class LoginController {
     }
 
     @PostMapping("/signUp")
-    public String signup(@Validated @ModelAttribute MemberCreateDto memberCreateDto,
+    public String signup(@Validated @ModelAttribute MemberCreateDto dto,
                          BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "login/signUp";
         }
 
-        Member member = Member.createMember(memberCreateDto.getId(),
-                memberCreateDto.getName(),
-                memberCreateDto.getPassword(),
-                memberCreateDto.getNumber());
+        String salt = PasswordEncoder.getSalt();
+        String encodedPassword = PasswordEncoder.encode(dto.getPassword(), salt);
+        Member member = Member.createMember(dto.getId(),
+                dto.getName(),
+                encodedPassword,
+                salt,
+                dto.getNumber());
         memberService.join(member);
 
         return "index";
