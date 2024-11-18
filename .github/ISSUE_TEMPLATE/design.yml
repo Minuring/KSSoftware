@@ -1,6 +1,6 @@
-name: "🎨 Design"
+name: "Design"
 description: "디자인을 고려야할 부분이 있나요?"
-labels: "🎨 Design"
+labels: "Design"
 body:
   - type: textarea
     attributes:
