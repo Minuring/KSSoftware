@@ -1,6 +1,6 @@
-name: "\U+1F3A8 Design"
+name: "🎨 Design"
 description: "디자인을 고려야할 부분이 있나요?"
-labels: "\U+1F3A8 Design"
+labels: "🎨 Design"
 body:
   - type: textarea
     attributes:
