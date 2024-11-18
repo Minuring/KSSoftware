@@ -1,6 +1,6 @@
-name: "\U0001F30F Environment"
+name: "\U0001F30F Design"
 description: "추가적인 환경설정이 필요한가요?"
-labels: "\U0001F30F Environment"
+labels: "\U0001F30F Design"
 body:
   - type: textarea
     attributes:
