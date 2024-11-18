@@ -34,7 +34,7 @@
         <div class="row">
             <div class="col">
                 <button class="btn btn-primary float-end"
-                        onclick="location.href='/board/post'" type="button" th:text="#{button.board.create}">새 글 작성
+                        onclick="location.href='/board/free/post'" type="button" th:text="#{button.board.create}">새 글 작성
                 </button>
             </div>
         </div>
@@ -55,9 +55,9 @@
             </thead>
             <tbody>
             <tr th:each="board : ${boards}">
-                <td><a href="board.html" th:href="@{/board/{boardId}(boardId=${board.id})}"
+                <td><a href="board.html" th:href="@{/board/free/{boardId}(boardId=${board.id})}"
                        th:text="${board.id}">게시글ID</a></td>
-                <td><a href="board.html" th:href="@{/board/{boardId}(boardId=${board.id})}"
+                <td><a href="board.html" th:href="@{/board/free/{boardId}(boardId=${board.id})}"
                        th:text="${board.title}">제목</a></td>
                 <td th:text="${board.writer.name} + ' (' + '***' + ${board.writer.id.substring(3)} + ')'">작성자</td>
                 <td th:text="${#temporals.format(board.createDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>

@@ -1,5 +1,6 @@
-package hello.kssoftware.board.entity;
+package hello.kssoftware.board.comment;
 
+import hello.kssoftware.board.common.Board;
 import hello.kssoftware.login.Member;
 import jakarta.persistence.*;
 import lombok.*;

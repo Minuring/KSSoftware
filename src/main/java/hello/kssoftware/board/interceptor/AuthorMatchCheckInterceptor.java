@@ -1,9 +1,9 @@
 package hello.kssoftware.board.interceptor;
 
 import hello.kssoftware.FlashNotifier;
-import hello.kssoftware.board.entity.Board;
-import hello.kssoftware.board.entity.Comment;
-import hello.kssoftware.board.repository.BoardRepository;
+import hello.kssoftware.board.common.Board;
+import hello.kssoftware.board.comment.Comment;
+import hello.kssoftware.board.common.BoardRepository;
 import hello.kssoftware.login.Member;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

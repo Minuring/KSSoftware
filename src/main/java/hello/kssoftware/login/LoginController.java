@@ -1,10 +1,11 @@
 package hello.kssoftware.login;
 
 import hello.kssoftware.FlashNotifier;
-import hello.kssoftware.board.dto.BoardDto;
-import hello.kssoftware.board.dto.CommentDto;
-import hello.kssoftware.board.entity.Board;
-import hello.kssoftware.board.service.BoardService;
+import hello.kssoftware.board.common.BoardDto;
+import hello.kssoftware.board.comment.CommentDto;
+import hello.kssoftware.board.files.entity.FilesBoard;
+import hello.kssoftware.board.files.dto.FilesBoardDto;
+import hello.kssoftware.board.common.BoardService;
 import hello.kssoftware.login.argumentresolver.Login;
 import hello.kssoftware.login.dto.MemberCreateDto;
 import hello.kssoftware.login.dto.MemberLoginDto;
@@ -31,7 +32,7 @@ public class LoginController {
     private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final FlashNotifier flashNotifier;
-    private final BoardService boardService;
+    private final BoardService<FilesBoard, FilesBoardDto> boardService;
 
     @GetMapping("/signIn")
     public String signInForm(MemberLoginDto memberLoginDto) {
@@ -126,7 +127,7 @@ public class LoginController {
 
 
     private void setMyPageModel(final Member member, final Model model, final PasswordChangeDto passwordChangeDto, final NameChangeDto nameChangeDto) {
-        List<Board> all = boardService.findAll(new BoardDto.Search());
+        List<FilesBoard> all = boardService.findAll(new BoardDto.Search());
         List<BoardDto.Response> boards = all.stream().filter(b -> b.getWriter().equals(member)).map(BoardDto.Response::new).toList();
         List<CommentDto.Response> comments = all.stream().flatMap(b -> b.getComments().stream())
                 .filter(c -> c.getWriter().equals(member)).map(CommentDto.Response::new).toList();

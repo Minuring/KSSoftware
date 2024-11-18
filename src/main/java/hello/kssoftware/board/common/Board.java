@@ -1,44 +1,44 @@
-package hello.kssoftware.board.entity;
+package hello.kssoftware.board.common;
 
+import hello.kssoftware.board.comment.Comment;
 import hello.kssoftware.login.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-
 import java.time.LocalDateTime;
 import java.util.List;
-
 import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.FetchType.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Board {
+@DiscriminatorColumn
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public abstract class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
-    private Member writer;
+    protected Member writer;
 
-    private String title;
+    protected String title;
 
-    private String content;
+    protected String content;
 
-    private LocalDateTime createDate;
+    protected LocalDateTime createDate;
 
-    private LocalDateTime updateDate;
+    protected LocalDateTime updateDate;
 
     @ColumnDefault(value = "0")
-    private Integer views = 0;
+    protected Integer views = 0;
 
     @OneToMany(mappedBy = "board", fetch = LAZY, cascade = ALL, orphanRemoval = true)
-    private List<Comment> comments;
+    protected List<Comment> comments;
 
-    @Builder
-    public Board(Member writer, String title, String content, LocalDateTime createDate, LocalDateTime updateDate) {
+    protected Board(Member writer, String title, String content, LocalDateTime createDate, LocalDateTime updateDate) {
         this.writer = writer;
         this.title = title;
         this.content = content;
