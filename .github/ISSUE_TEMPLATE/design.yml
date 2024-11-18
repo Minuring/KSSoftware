@@ -1,6 +1,6 @@
-name: "\U0001F64B Design"
+name: "💄 Design"
 description: "팀원들과 논의할 내용이 있나요?"
-labels: "\U0001F64B Design"
+labels: "💄 Design"
 body:
   - type: textarea
     attributes:
