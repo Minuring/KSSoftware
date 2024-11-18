@@ -1,18 +1,18 @@
-name: "Design"
-description: "디자인을 고려야할 부분이 있나요?"
-labels: "Design"
+name: "\U0001F528 Design"
+description: "리팩터링을 해야할 부분이 있나요?"
+labels: "\U0001F528 Design"
 body:
   - type: textarea
     attributes:
       label: 🔨 Describe
-      description: 왜 디자인을 수정해야하는지 설명해주세요!
+      description: 왜 디자인을 수정 해야하는지 설명해주세요!
       placeholder: 자세히 적을수록 좋습니다!
     validations:
       required: true
   - type: textarea
     attributes:
       label: ✅ Tasks
-      description: 디자인을 수정할 부분에 대해서 자세히 작성해 주세요.
+      description: 디자인을 수정 할 부분에 대해서 자세히 작성해 주세요.
       placeholder: 최대한 세분화 해서 적어주세요!
     validations:
       required: true
