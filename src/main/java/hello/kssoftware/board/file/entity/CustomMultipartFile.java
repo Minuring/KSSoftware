@@ -1,29 +1,24 @@
-package hello.kssoftware.board.files.entity;
+package hello.kssoftware.board.file.entity;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-@Getter @Setter
+@Getter
+@Setter
 public class CustomMultipartFile implements MultipartFile {
-    private final File file;
 
-    protected String uploadFileName;
+    private final File file;
+    private String uploadFileName;
 
     public CustomMultipartFile(File file, String uploadFileName) {
         this.file = file;
         this.uploadFileName = uploadFileName;
-    }
-
-    public String getUploadFileName() {
-        if (uploadFileName == null) {
-            return "파일존재하지않음";
-        }
-        return uploadFileName;
     }
 
     @Override

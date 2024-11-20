@@ -1,7 +1,7 @@
-package hello.kssoftware.board.files.service;
+package hello.kssoftware.board.file.service;
 
-import hello.kssoftware.board.files.entity.CustomMultipartFile;
-import hello.kssoftware.board.files.entity.UploadFile;
+import hello.kssoftware.board.file.entity.CustomMultipartFile;
+import hello.kssoftware.board.file.entity.UploadFile;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;

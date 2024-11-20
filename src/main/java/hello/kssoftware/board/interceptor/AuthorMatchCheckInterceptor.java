@@ -1,21 +1,19 @@
 package hello.kssoftware.board.interceptor;
 
 import hello.kssoftware.FlashNotifier;
-import hello.kssoftware.board.common.Board;
 import hello.kssoftware.board.comment.Comment;
+import hello.kssoftware.board.common.Board;
 import hello.kssoftware.board.common.BoardRepository;
 import hello.kssoftware.login.Member;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 
 import java.util.Map;
 
-@Slf4j
 @RequiredArgsConstructor
 @Component
 public class AuthorMatchCheckInterceptor implements HandlerInterceptor {
@@ -32,11 +30,10 @@ public class AuthorMatchCheckInterceptor implements HandlerInterceptor {
         Long boardId = getIdFromPathVariable(request);
         Board board = boardRepository.findById(boardId);
 
-        boolean matches = false;
+        boolean matches;
         if (requestURI.contains("comment")) {
             matches = doCompareWithCommentAuthor(request, board, loginUser);
-        }
-        else {
+        } else {
             matches = doCompareWithBoardAuthor(board, loginUser);
         }
 

@@ -1,47 +1,60 @@
 package hello.kssoftware.board.common;
 
+import hello.kssoftware.login.Member;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+
 import java.util.List;
 
-@Slf4j
 @Repository
-public class BoardRepository<T extends Board>{
+public class BoardRepository {
 
     @PersistenceContext
     protected EntityManager em;
 
-    public Long save(T board) {
+    public Long save(Board board) {
         em.persist(board);
         return board.getId();
     }
 
-    public T findById(Long id) {
-        return (T) em.find(Board.class, id);
+    public Board findById(Long id) {
+        return em.find(Board.class, id);
+    }
+
+    public List<Board> findByMember(Member member) {
+        String jpql = "select b From Board b " +
+                "left join fetch b.writer w " +
+                "where b.writer.id = :id";
+
+        return em.createQuery(jpql, Board.class)
+                .setParameter("id", member.getId())
+                .getResultList();
     }
 
     public void delete(Long id) {
-        T findBoard = (T) em.find(Board.class, id);
-        em.remove(findBoard);
+        Board board = em.find(Board.class, id);
+        em.remove(board);
     }
 
-    public List<T> findAll(BoardDto.Search search) {
-        String jpql = "select b From Board b left join fetch b.writer w left join fetch b.comments c ";
-        jpql += "where type(b) = " + search.getType();
+    public List<Board> findAll(BoardSearch search) {
+        String jpql = generateJpql(search);
+        return em.createQuery(jpql, Board.class).getResultList();
+    }
 
-        //제목으로 검색
+    private String generateJpql(BoardSearch search) {
+        String jpql = "select b From Board b left join fetch b.writer w left join fetch b.comments c";
+
         if (StringUtils.hasText(search.getTitle())) {
-            jpql += " and b.title like '%" + search.getTitle() + "%'";
+            jpql += " where b.title like '%" + search.getTitle() + "%'";
         }
-        //작성자로 검색
+
         if (StringUtils.hasText(search.getWriterName())) {
-            jpql += " and b.writer.name like '%" + search.getWriterName() + "%'";
+            jpql += jpql.contains("where") ? " and" : " where";
+            jpql += " b.writer.name like '%" + search.getWriterName() + "%'";
         }
-        TypedQuery<Board> query = em.createQuery(jpql, Board.class).setMaxResults(1000);//최대 1000건
-        return (List<T>) query.getResultList();
+
+        return jpql;
     }
 }

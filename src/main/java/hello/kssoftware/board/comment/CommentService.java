@@ -1,30 +1,30 @@
 package hello.kssoftware.board.comment;
 
+import hello.kssoftware.board.comment.dto.CommentCreate;
+import hello.kssoftware.board.comment.dto.CommentUpdate;
 import hello.kssoftware.board.common.Board;
 import hello.kssoftware.board.common.BoardRepository;
+import hello.kssoftware.login.Member;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.util.List;
+
+import static hello.kssoftware.board.common.TimeUtils.now;
 
 @Service
 @Transactional
-@Slf4j
 @RequiredArgsConstructor
 public class CommentService {
 
     private final BoardRepository boardRepository;
 
-    public void createComment(CommentDto.Create dto) {
-        Long boardId = dto.getBoardId();
+    public void createComment(Member member, Long boardId, CommentCreate dto) {
         Board board = boardRepository.findById(boardId);
-
         Comment comment = Comment.builder()
                 .content(dto.getContent())
-                .writer(dto.getWriter())
+                .writer(member)
                 .anonymousYn(dto.isAnonymousYn())
                 .createDate(now())
                 .updateDate(now())
@@ -33,11 +33,9 @@ public class CommentService {
         board.addComment(comment);
     }
 
-    public void updateComment(CommentDto.Update dto) {
-        Long commentId = dto.getCommentId();
-        Long boardId = dto.getBoardId();
+    public void updateComment(Long boardId, CommentUpdate dto) {
         Board board = boardRepository.findById(boardId);
-        Comment comment = board.getComment(commentId);
+        Comment comment = board.getComment(dto.getCommentId());
 
         comment.update(dto.getContent(), now());
     }
@@ -49,7 +47,7 @@ public class CommentService {
         board.deleteComment(comment);
     }
 
-    private LocalDateTime now() {
-        return LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+    public List<Comment> findAll(Board board) {
+        return board.getComments();
     }
 }

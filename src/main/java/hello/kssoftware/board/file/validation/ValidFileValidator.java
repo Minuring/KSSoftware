@@ -1,4 +1,4 @@
-package hello.kssoftware.board.files.validation;
+package hello.kssoftware.board.file.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
