@@ -1,6 +1,6 @@
-package hello.kssoftware.board.files.service;
+package hello.kssoftware.board.file.service;
 
-import hello.kssoftware.board.files.entity.UploadFile;
+import hello.kssoftware.board.file.entity.UploadFile;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

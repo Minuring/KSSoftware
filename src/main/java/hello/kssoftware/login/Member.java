@@ -1,15 +1,16 @@
 package hello.kssoftware.login;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Objects;
-
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @ToString
 @EqualsAndHashCode
 public class Member {
@@ -21,16 +22,17 @@ public class Member {
     @Column(unique = true)
     private String name;
 
-    @Column(columnDefinition="CHAR(64)")
+    @Column(columnDefinition = "CHAR(64)")
     private String password;
 
-    @Column(columnDefinition="CHAR(32)")
+    @Column(columnDefinition = "CHAR(32)")
     private String salt;
 
     @Column(nullable = false)
     private Integer number;
 
-    protected Member() {}
+    protected Member() {
+    }
 
     public static Member createMember(String id, String name, String password, String salt, Integer number) {
         Member member = new Member();

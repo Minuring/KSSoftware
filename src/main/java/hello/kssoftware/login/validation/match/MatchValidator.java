@@ -7,9 +7,7 @@ import hello.kssoftware.login.encrypt.PasswordEncoder;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 public class MatchValidator implements ConstraintValidator<Match, Object> {
     private final MemberRepository memberRepository;

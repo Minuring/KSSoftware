@@ -1,11 +1,12 @@
 package hello.kssoftware.board.comment;
 
 import hello.kssoftware.FlashNotifier;
+import hello.kssoftware.board.comment.dto.CommentCreate;
+import hello.kssoftware.board.comment.dto.CommentUpdate;
 import hello.kssoftware.login.Member;
 import hello.kssoftware.login.argumentresolver.Login;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +16,8 @@ import org.springframework.web.bind.annotation.*;
  * 작성자와 로그인유저 검증을 마친 정상 흐름을 가정하고 처리
  */
 @Controller
-@RequestMapping({"/board/free", "/board/files"})
+@RequestMapping({"/board/free", "/board/file"})
 @RequiredArgsConstructor
-@Slf4j
 public class CommentController {
 
     private final CommentService commentService;
@@ -26,33 +26,29 @@ public class CommentController {
     @PostMapping("/{id}/comment/new")
     public String createComment(@Login Member member,
                                 @PathVariable(value = "id") Long boardId,
-                                @ModelAttribute("commentCreateDto") CommentDto.Create dto,
+                                @ModelAttribute("commentCreateDto") CommentCreate dto,
                                 HttpServletRequest request) {
-
-        dto.setBoardId(boardId);
-        dto.setWriter(member);
-        commentService.createComment(dto);
+        commentService.createComment(member, boardId, dto);
 
         flashNotifier.notify("message.created.comment");
 
         String fullPath = request.getRequestURI().contains("/board/free") ?
-                "/board/free/" + boardId : "/board/files/" + boardId;
+                "/board/free/" + boardId : "/board/file/" + boardId;
 
         return "redirect:" + fullPath;
     }
 
     @PostMapping("/{id}/comment/edit")
     public String updateComment(@PathVariable("id") Long boardId,
-                                @ModelAttribute("commentUpdateDto") CommentDto.Update dto,
+                                @ModelAttribute("commentUpdateDto") CommentUpdate dto,
                                 HttpServletRequest request) {
 
-        dto.setBoardId(boardId);
-        commentService.updateComment(dto);
+        commentService.updateComment(boardId, dto);
 
         flashNotifier.notify("message.updated.comment");
 
         String fullPath = request.getRequestURI().contains("/board/free") ?
-                "/board/free/" + boardId : "/board/files/" + boardId;
+                "/board/free/" + boardId : "/board/file/" + boardId;
 
         return "redirect:" + fullPath;
     }
@@ -61,12 +57,12 @@ public class CommentController {
     public String deleteComment(@PathVariable("id") Long boardId,
                                 @RequestParam(name = "commentId") Long commentId,
                                 HttpServletRequest request) {
-
         commentService.deleteComment(boardId, commentId);
+
         flashNotifier.notify("message.deleted.comment");
 
         String fullPath = request.getRequestURI().contains("/board/free") ?
-                "/board/free/" + boardId : "/board/files/" + boardId;
+                "/board/free/" + boardId : "/board/file/" + boardId;
 
         return "redirect:" + fullPath;
     }
