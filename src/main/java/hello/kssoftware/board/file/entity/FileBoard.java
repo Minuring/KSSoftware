@@ -1,24 +1,28 @@
-package hello.kssoftware.board.files.entity;
+package hello.kssoftware.board.file.entity;
 
 import hello.kssoftware.board.common.Board;
 import hello.kssoftware.login.Member;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Getter
 @Entity
-@DiscriminatorValue("Files")
+@DiscriminatorValue("file")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class FilesBoard extends Board {
+public class FileBoard extends Board {
 
     @Embedded
     protected UploadFile file;
 
     @Builder
-    public FilesBoard(Member writer, String title, String content, LocalDateTime createDate, LocalDateTime updateDate, UploadFile file) {
+    public FileBoard(Member writer, String title, String content, LocalDateTime createDate, LocalDateTime updateDate, UploadFile file) {
         super(writer, title, content, createDate, updateDate);
         this.file = file;
     }

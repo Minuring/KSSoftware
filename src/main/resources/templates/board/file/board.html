@@ -13,7 +13,7 @@
         <div class="col-2">
             <button class="btn btn-primary btn-lg"
                     onclick="location.href='edit.html'"
-                    th:onclick="|location.href='@{/board/files/{boardId}/edit(boardId=${board.id})}'|"
+                    th:onclick="|location.href='@{/board/file/{boardId}/edit(boardId=${board.id})}'|"
                     type="button"
                     th:text="#{button.board.update}">
                 글 수정
@@ -22,7 +22,7 @@
         <div class="col-2">
             <button class="btn btn-secondary btn-lg"
                     onclick="location.href='items.html'"
-                    th:onclick="|location.href='@{/board/files}'|"
+                    th:onclick="|location.href='@{/board/file}'|"
                     type="button"
                     th:text="#{button.board.list}">
                 목록으로
@@ -66,7 +66,7 @@
         <div class="row align-items-start mb-3">
             <div class="col">
                 <label th:text="#{label.board.contentFile}">첨부파일</label>
-                <a th:if="${board.file}" th:href="|/board/files/attach/${board.id}|"
+                <a th:if="${board.file}" th:href="|/board/file/attach/${board.id}|"
                    class="form-control bg-secondary-subtle"
                    th:text="${board.getFile().getUploadFileName()}" /><br/>
             </div>
@@ -85,7 +85,7 @@
         <div class="card my-4">
             <h5 class="card-header" th:text="#{page.createComment}">댓글 작성하기 </h5>
             <div class="card-body">
-                <form role="form" th:action="@{/board/files/{boardId}/comment/new(boardId=${board.id})}"
+                <form role="form" th:action="@{/board/file/{boardId}/comment/new(boardId=${board.id})}"
                       th:object="${commentCreateDto}" method="post">
                     <textarea class="form-control" th:field="*{content}" rows="3" required></textarea>
                     <div class="form-group d-sm-flex mx-1 mb-1 align-items-center">

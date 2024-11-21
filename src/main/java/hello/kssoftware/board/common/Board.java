@@ -13,12 +13,15 @@ import static jakarta.persistence.FetchType.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@DiscriminatorColumn
+@DiscriminatorColumn(name = "board_type")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
+
+    @Column(name = "board_type", insertable = false, updatable = false)
+    protected String type;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")

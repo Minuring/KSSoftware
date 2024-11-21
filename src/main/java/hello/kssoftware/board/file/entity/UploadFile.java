@@ -1,4 +1,4 @@
-package hello.kssoftware.board.files.entity;
+package hello.kssoftware.board.file.entity;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
@@ -8,8 +8,8 @@ import lombok.Setter;
 @Embeddable
 public class UploadFile {
 
-    protected String uploadFileName;
-    protected String storeFileName;
+    private String uploadFileName;
+    private String storeFileName;
 
     public UploadFile(String uploadFileName, String storeFileName) {
         this.uploadFileName = uploadFileName;

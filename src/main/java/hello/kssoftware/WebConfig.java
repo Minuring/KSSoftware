@@ -1,7 +1,7 @@
 package hello.kssoftware;
 
-import hello.kssoftware.board.interceptor.AuthorMatchCheckInterceptor;
 import hello.kssoftware.board.common.BoardRepository;
+import hello.kssoftware.board.interceptor.AuthorMatchCheckInterceptor;
 import hello.kssoftware.login.argumentresolver.LoginMemberArgumentResolver;
 import hello.kssoftware.login.interceptor.LoginCheckInterceptor;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +29,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginCheckInterceptor(flashNotifier))
                 .order(1)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/", "/login/signIn","/login/signUp", "/css/**",
-                        "/board","/*.ico", "/error","/*.png","/img/**", "/js/**");
+                .excludePathPatterns("/", "/login/signIn", "/login/signUp", "/css/**",
+                        "/board", "/*.ico", "/error", "/*.png", "/img/**", "/js/**");
 
         registry.addInterceptor(new AuthorMatchCheckInterceptor(boardRepository, flashNotifier))
                 .order(2)

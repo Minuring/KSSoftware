@@ -1,11 +1,9 @@
 package hello.kssoftware.login;
 
 import hello.kssoftware.FlashNotifier;
-import hello.kssoftware.board.common.BoardDto;
-import hello.kssoftware.board.comment.CommentDto;
-import hello.kssoftware.board.files.entity.FilesBoard;
-import hello.kssoftware.board.files.dto.FilesBoardDto;
-import hello.kssoftware.board.common.BoardService;
+import hello.kssoftware.board.comment.dto.CommentResponse;
+import hello.kssoftware.board.common.Board;
+import hello.kssoftware.board.common.BoardRepository;
 import hello.kssoftware.login.argumentresolver.Login;
 import hello.kssoftware.login.dto.MemberCreateDto;
 import hello.kssoftware.login.dto.MemberLoginDto;
@@ -15,7 +13,6 @@ import hello.kssoftware.login.encrypt.PasswordEncoder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
 @Controller
 @RequestMapping("/login")
 @RequiredArgsConstructor
@@ -33,7 +29,7 @@ public class LoginController {
     private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final FlashNotifier flashNotifier;
-    private final BoardService<FilesBoard, FilesBoardDto> boardService;
+    private final BoardRepository boardRepository;
 
     @GetMapping("/signIn")
     public String signInForm(MemberLoginDto memberLoginDto) {
@@ -50,7 +46,7 @@ public class LoginController {
         }
 
         Optional<Member> memberOptional = memberRepository.findById(memberLoginDto.getId());
-        Member loginUser = memberOptional.get();
+        Member loginUser = memberOptional.orElseThrow(IllegalArgumentException::new);
 
         HttpSession session = request.getSession();
         session.setAttribute("loginUser", loginUser);
@@ -130,16 +126,24 @@ public class LoginController {
     }
 
 
-    private void setMyPageModel(final Member member, final Model model, final PasswordChangeDto passwordChangeDto, final NameChangeDto nameChangeDto) {
-        List<FilesBoard> all = boardService.findAll(new BoardDto.Search());
-        List<BoardDto.Response> boards = all.stream().filter(b -> b.getWriter().equals(member)).map(BoardDto.Response::new).toList();
-        List<CommentDto.Response> comments = all.stream().flatMap(b -> b.getComments().stream())
-                .filter(c -> c.getWriter().equals(member)).map(CommentDto.Response::new).toList();
+    private void setMyPageModel(Member member, Model model, PasswordChangeDto passwordChangeDto, NameChangeDto nameChangeDto) {
+        List<Board> boards = boardRepository.findByMember(member);
+        List<CommentResponse> comments = getCommentResponses(member);
 
         model.addAttribute("member", member);
         model.addAttribute("passwordChangeDto", passwordChangeDto);
         model.addAttribute("nameChangeDto", nameChangeDto);
         model.addAttribute("boards", boards);
         model.addAttribute("comments", comments);
+    }
+
+    private List<CommentResponse> getCommentResponses(Member member) {
+        List<Board> boards = boardRepository.findByMember(member);
+
+        return boards.stream()
+                .flatMap(b -> b.getComments().stream())
+                .filter(c -> c.getWriter().equals(member))
+                .map(CommentResponse::from)
+                .toList();
     }
 }
