@@ -15,6 +15,7 @@ public class SignUp {
     private String id;
 
     @NotBlank
+    @Size(min = 6)
     private String password;
 
     @NotBlank

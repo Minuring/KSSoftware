@@ -127,8 +127,7 @@
                     <div class="modal-body">
 
                         <div th:if="${#fields.hasGlobalErrors()}">
-                            <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">로그인 실패
-                                메시지</p>
+                            <p class="field-error" style="color: red" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
                         </div>
 
                         <div class="col-12 mb-3">
@@ -146,7 +145,7 @@
                                 <input type="password" class="form-control" th:errorclass="is-invalid"
                                        th:field="*{newPassword}"
                                        placeholder="*******">
-                                <div class="invalid-feedback" th:errors="*{newPassword}"></div>
+                                <div class="invalid-feedback" th:if="${!#fields.errors('newPassword').isEmpty()}" th:text="${#fields.errors('newPassword').size()} == 1 ? ${#fields.errors('newPassword').get(0)} : #{NotBlank}"/>
                             </div>
                         </div>
                         <div class="col-12 mb-3">
