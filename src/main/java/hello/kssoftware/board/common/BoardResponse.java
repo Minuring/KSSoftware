@@ -13,6 +13,7 @@ import java.util.List;
 public class BoardResponse {
     
     protected Long id;
+    protected String type;
     protected Member writer;
     protected String title;
     protected String content;
@@ -21,8 +22,9 @@ public class BoardResponse {
     protected Integer views = 0;
     protected List<Comment> comments;
 
-    protected BoardResponse(Long id, Member writer, String title, String content, LocalDateTime createDate, LocalDateTime updateDate, Integer views, List<Comment> comments) {
+    protected BoardResponse(Long id, String type, Member writer, String title, String content, LocalDateTime createDate, LocalDateTime updateDate, Integer views, List<Comment> comments) {
         this.id = id;
+        this.type = type;
         this.writer = writer;
         this.title = title;
         this.content = content;
@@ -35,6 +37,7 @@ public class BoardResponse {
     public static BoardResponse from(Board board) {
         return new BoardResponse(
                 board.getId(),
+                board.getType(),
                 board.getWriter(),
                 board.getTitle(),
                 board.getContent(),

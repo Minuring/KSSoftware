@@ -2,14 +2,13 @@ package hello.kssoftware.login;
 
 import hello.kssoftware.FlashNotifier;
 import hello.kssoftware.board.comment.dto.CommentResponse;
-import hello.kssoftware.board.common.Board;
 import hello.kssoftware.board.common.BoardRepository;
+import hello.kssoftware.board.common.BoardResponse;
 import hello.kssoftware.login.argumentresolver.Login;
 import hello.kssoftware.login.dto.NameChange;
 import hello.kssoftware.login.dto.PasswordChange;
 import hello.kssoftware.login.dto.SignIn;
 import hello.kssoftware.login.dto.SignUp;
-import hello.kssoftware.login.encrypt.PasswordEncoder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -63,19 +62,10 @@ public class LoginController {
     @PostMapping("/signUp")
     public String signup(@Validated @ModelAttribute SignUp dto,
                          BindingResult bindingResult) {
-
         if (bindingResult.hasErrors()) {
             return "login/signUp";
         }
-
-        String salt = PasswordEncoder.getSalt();
-        String encodedPassword = PasswordEncoder.encode(dto.getPassword(), salt);
-        Member member = Member.createMember(dto.getId(),
-                dto.getName(),
-                encodedPassword,
-                salt,
-                dto.getNumber());
-        memberService.join(member);
+        memberService.join(dto);
 
         return "index";
     }
@@ -94,10 +84,10 @@ public class LoginController {
         }
 
         memberService.updatePassword(member.getId(), dto.getNewPassword());
+        session.invalidate();
 
         flashNotifier.notify("message.updated.password");
         flashNotifier.notify("message.required.reLogin");
-        session.invalidate();
         return "redirect:/";
     }
 
@@ -109,38 +99,35 @@ public class LoginController {
         }
 
         memberService.updateName(member.getId(), dto.getName());
+        session.invalidate();
 
         flashNotifier.notify("message.updated.name");
         flashNotifier.notify("message.required.reLogin");
-        session.invalidate();
         return "redirect:/";
     }
 
     @PostMapping("/logout")
     public String logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
+        Optional.ofNullable(request.getSession(false))
+                .ifPresent(HttpSession::invalidate);
         return "redirect:/";
     }
 
 
     private void setMyPageModel(Member member, Model model, PasswordChange passwordChange, NameChange nameChange) {
-        List<Board> boards = boardRepository.findByMember(member);
+        List<BoardResponse> boards = boardRepository.findByMember(member).stream().map(BoardResponse::from).toList();
         List<CommentResponse> comments = getCommentResponses(member);
 
         model.addAttribute("member", member);
-        model.addAttribute("passwordChangeDto", passwordChange);
-        model.addAttribute("nameChangeDto", nameChange);
+        model.addAttribute("passwordChange", passwordChange);
+        model.addAttribute("nameChange", nameChange);
         model.addAttribute("boards", boards);
         model.addAttribute("comments", comments);
     }
 
     private List<CommentResponse> getCommentResponses(Member member) {
-        List<Board> boards = boardRepository.findByMember(member);
-
-        return boards.stream()
+        return boardRepository.findByMember(member)
+                .stream()
                 .flatMap(b -> b.getComments().stream())
                 .filter(c -> c.getWriter().equals(member))
                 .map(CommentResponse::from)
