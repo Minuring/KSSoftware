@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class NameChangeDto {
+public class NameChange {
     @NotDuplicateName
     @Size(min = 5)
     private String name;

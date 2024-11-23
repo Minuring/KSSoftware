@@ -5,10 +5,10 @@ import hello.kssoftware.board.comment.dto.CommentResponse;
 import hello.kssoftware.board.common.Board;
 import hello.kssoftware.board.common.BoardRepository;
 import hello.kssoftware.login.argumentresolver.Login;
-import hello.kssoftware.login.dto.MemberCreateDto;
-import hello.kssoftware.login.dto.MemberLoginDto;
-import hello.kssoftware.login.dto.NameChangeDto;
-import hello.kssoftware.login.dto.PasswordChangeDto;
+import hello.kssoftware.login.dto.NameChange;
+import hello.kssoftware.login.dto.PasswordChange;
+import hello.kssoftware.login.dto.SignIn;
+import hello.kssoftware.login.dto.SignUp;
 import hello.kssoftware.login.encrypt.PasswordEncoder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -32,12 +32,12 @@ public class LoginController {
     private final BoardRepository boardRepository;
 
     @GetMapping("/signIn")
-    public String signInForm(MemberLoginDto memberLoginDto) {
+    public String signInForm(SignIn signIn) {
         return "login/signIn";
     }
 
     @PostMapping("/signIn")
-    public String signIn(@Validated MemberLoginDto memberLoginDto,
+    public String signIn(@Validated SignIn signIn,
                          BindingResult bindingResult,
                          @RequestParam(defaultValue = "/") String redirectURI,
                          HttpServletRequest request) {
@@ -45,7 +45,7 @@ public class LoginController {
             return "login/signIn";
         }
 
-        Optional<Member> memberOptional = memberRepository.findById(memberLoginDto.getId());
+        Optional<Member> memberOptional = memberRepository.findById(signIn.getId());
         Member loginUser = memberOptional.orElseThrow(IllegalArgumentException::new);
 
         HttpSession session = request.getSession();
@@ -56,12 +56,12 @@ public class LoginController {
     }
 
     @GetMapping("/signUp")
-    public String signupForm(@ModelAttribute MemberCreateDto memberCreateDto) {
+    public String signupForm(@ModelAttribute SignUp signUp) {
         return "login/signUp";
     }
 
     @PostMapping("/signUp")
-    public String signup(@Validated @ModelAttribute MemberCreateDto dto,
+    public String signup(@Validated @ModelAttribute SignUp dto,
                          BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
@@ -82,14 +82,14 @@ public class LoginController {
 
     @GetMapping("/myPage")
     public String myPage(@Login Member member, Model model) {
-        setMyPageModel(member, model, new PasswordChangeDto(), new NameChangeDto());
+        setMyPageModel(member, model, new PasswordChange(), new NameChange());
         return "login/myPage";
     }
 
     @PostMapping("/myPage/changePassword")
-    public String changePassword(@Login Member member, @Validated PasswordChangeDto dto, BindingResult bindingResult, Model model, HttpSession session) {
+    public String changePassword(@Login Member member, @Validated PasswordChange dto, BindingResult bindingResult, Model model, HttpSession session) {
         if (bindingResult.hasErrors()) {
-            setMyPageModel(member, model, dto, new NameChangeDto());
+            setMyPageModel(member, model, dto, new NameChange());
             return "login/myPage";
         }
 
@@ -102,9 +102,9 @@ public class LoginController {
     }
 
     @PostMapping("/myPage/changeName")
-    public String changeName(@Login Member member, @Validated NameChangeDto dto, BindingResult bindingResult, Model model, HttpSession session) {
+    public String changeName(@Login Member member, @Validated NameChange dto, BindingResult bindingResult, Model model, HttpSession session) {
         if (bindingResult.hasErrors()) {
-            setMyPageModel(member, model, new PasswordChangeDto(), dto);
+            setMyPageModel(member, model, new PasswordChange(), dto);
             return "login/myPage";
         }
 
@@ -126,13 +126,13 @@ public class LoginController {
     }
 
 
-    private void setMyPageModel(Member member, Model model, PasswordChangeDto passwordChangeDto, NameChangeDto nameChangeDto) {
+    private void setMyPageModel(Member member, Model model, PasswordChange passwordChange, NameChange nameChange) {
         List<Board> boards = boardRepository.findByMember(member);
         List<CommentResponse> comments = getCommentResponses(member);
 
         model.addAttribute("member", member);
-        model.addAttribute("passwordChangeDto", passwordChangeDto);
-        model.addAttribute("nameChangeDto", nameChangeDto);
+        model.addAttribute("passwordChangeDto", passwordChange);
+        model.addAttribute("nameChangeDto", nameChange);
         model.addAttribute("boards", boards);
         model.addAttribute("comments", comments);
     }

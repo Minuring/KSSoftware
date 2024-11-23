@@ -2,7 +2,7 @@ package hello.kssoftware.login.validation.match;
 
 import hello.kssoftware.login.Member;
 import hello.kssoftware.login.MemberRepository;
-import hello.kssoftware.login.dto.MemberLoginDto;
+import hello.kssoftware.login.dto.SignIn;
 import hello.kssoftware.login.encrypt.PasswordEncoder;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -19,7 +19,7 @@ public class MatchValidator implements ConstraintValidator<Match, Object> {
 
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
-        MemberLoginDto dto = (MemberLoginDto) o;
+        SignIn dto = (SignIn) o;
         String id = dto.getId();
         String rawPassword = dto.getPassword();
         if (id.isEmpty() || rawPassword.isEmpty()) {

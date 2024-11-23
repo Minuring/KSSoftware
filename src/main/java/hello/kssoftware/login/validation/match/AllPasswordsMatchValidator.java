@@ -2,7 +2,7 @@ package hello.kssoftware.login.validation.match;
 
 import hello.kssoftware.login.Member;
 import hello.kssoftware.login.MemberRepository;
-import hello.kssoftware.login.dto.PasswordChangeDto;
+import hello.kssoftware.login.dto.PasswordChange;
 import hello.kssoftware.login.encrypt.PasswordEncoder;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.ConstraintValidator;
@@ -20,7 +20,7 @@ public class AllPasswordsMatchValidator implements ConstraintValidator<AllPasswo
 
     @Override
     public boolean isValid(final Object o, final ConstraintValidatorContext constraintValidatorContext) {
-        PasswordChangeDto dto = (PasswordChangeDto) o;
+        PasswordChange dto = (PasswordChange) o;
         String oldPassword = dto.getOldPassword();
         String newPassword = dto.getNewPassword();
         String confirmPassword = dto.getConfirmPassword();
