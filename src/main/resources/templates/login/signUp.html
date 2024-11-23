@@ -41,10 +41,10 @@
             <div class="field-error" th:if="${!#fields.errors('name').isEmpty()}" th:text="${#fields.errors('name').size()} == 1 ? ${#fields.errors('name').get(0)} : #{NotBlank.name}"/>
         </div>
         <div>
-            <label for="number" th:text="#{label.login.signUp.number}">학번</label>
-            <input type="text" id="number" th:field="*{number}"
+            <label for="studentNumber" th:text="#{label.login.signUp.studentNumber}">학번</label>
+            <input type="text" id="studentNumber" th:field="*{studentNumber}"
                    th:errorclass="field-error" class="form-control" placeholder="학번을 입력하세요">
-            <div class="field-error" th:errors="*{number}">학번 오류</div>
+            <div class="field-error" th:errors="*{studentNumber}">학번 오류</div>
         </div>
 
         <hr class="my-4">

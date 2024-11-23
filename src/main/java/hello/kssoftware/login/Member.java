@@ -6,8 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Getter
@@ -28,18 +26,18 @@ public class Member {
     private String salt;
 
     @Column(nullable = false)
-    private Integer number;
+    private String studentNumber;
 
     protected Member() {
     }
 
-    public static Member create(String id, String name, String rawPassword, Integer studentNumber) {
+    public static Member create(String id, String name, String rawPassword, String studentNumber) {
         Member member = new Member();
         member.id = id;
         member.name = name;
         member.salt = PasswordEncoder.getSalt();
         member.password = PasswordEncoder.encode(rawPassword, member.salt);
-        member.number = studentNumber;
+        member.studentNumber = studentNumber;
         return member;
     }
 

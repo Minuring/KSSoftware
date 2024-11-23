@@ -23,7 +23,6 @@ public class SignUp {
     @Size(min = 5)
     private String name;
 
-    @NotNull
-    @Min(value = 10)
-    private Integer number;
+    @Pattern(regexp = "\\d{10}")
+    private String studentNumber;
 }
