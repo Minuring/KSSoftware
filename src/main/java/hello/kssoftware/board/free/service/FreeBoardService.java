@@ -3,6 +3,7 @@ package hello.kssoftware.board.free.service;
 import hello.kssoftware.board.common.BoardRepository;
 import hello.kssoftware.board.common.BoardSearch;
 import hello.kssoftware.board.free.dto.FreeBoardCreate;
+import hello.kssoftware.board.free.dto.FreeBoardResponse;
 import hello.kssoftware.board.free.dto.FreeBoardUpdate;
 import hello.kssoftware.board.free.entity.FreeBoard;
 import hello.kssoftware.login.Member;
@@ -38,15 +39,17 @@ public class FreeBoardService {
         board.update(dto.getTitle(), dto.getContent(), now());
     }
 
-    public FreeBoard findById(Long boardId) {
-        return (FreeBoard) boardRepository.findById(boardId);
+    public FreeBoardResponse findById(Long boardId) {
+        FreeBoard board = (FreeBoard) boardRepository.findById(boardId);
+        return FreeBoardResponse.from(board);
     }
 
-    public List<FreeBoard> findAll(BoardSearch dto) {
+    public List<FreeBoardResponse> findAll(BoardSearch dto) {
         return boardRepository.findAll(dto)
                 .stream()
                 .filter(board -> board instanceof FreeBoard)
                 .map(board -> (FreeBoard) board)
+                .map(FreeBoardResponse::from)
                 .toList();
     }
 
