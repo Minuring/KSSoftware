@@ -7,6 +7,8 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+
 import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.FetchType.*;
 
@@ -47,6 +49,10 @@ public abstract class Board {
         this.content = content;
         this.createDate = createDate;
         this.updateDate = updateDate;
+    }
+
+    public boolean isWrittenBy(Member member) {
+        return Objects.equals(writer, member);
     }
 
     public void update(String title, String content, LocalDateTime updateDate) {

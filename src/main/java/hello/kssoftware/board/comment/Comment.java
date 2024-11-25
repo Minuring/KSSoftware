@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static jakarta.persistence.FetchType.*;
 
@@ -33,6 +34,9 @@ public class Comment {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
+    public boolean isWrittenBy(Member member) {
+        return Objects.equals(writer, member);
+    }
 
     public void update(String content, LocalDateTime updateDate) {
         this.content = content;
