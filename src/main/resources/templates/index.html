@@ -14,7 +14,7 @@
     }
 
     .card {
-        width: 15rem;
+        width: 20rem;
     }
 
     .card-text {
@@ -23,8 +23,8 @@
 </style>
 
 <div class="container-lg" id="container" layout:fragment="content">
-    <div class="row row-cols-2 row-cols-md-4 g-2">
-        <div class="col">
+    <div class="row row-cols-1 row-cols-sm-2 g-2 align-content-center">
+        <div class="col d-flex justify-content-center align-items-center">
             <div class="card text-center">
                 <img src="/img/intro_coding.png" class="card-img-top" alt="...">
                 <div class="card-body">
@@ -34,7 +34,7 @@
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col d-flex justify-content-center align-items-center">
             <div class="card text-center">
                 <img src="/img/intro_coding.png" class="card-img-top" alt="...">
                 <div class="card-body">
@@ -44,6 +44,9 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-2">
         <div class="col">
             <div class="card text-center">
                 <img src="/img/intro_career.png" class="card-img-top" alt="...">
