@@ -44,8 +44,8 @@ public class LoginController {
             return "login/signIn";
         }
 
-        Optional<Member> memberOptional = memberRepository.findById(signIn.getId());
-        Member loginUser = memberOptional.orElseThrow(IllegalArgumentException::new);
+        Member loginUser = memberRepository.findById(signIn.getId())
+                .orElseThrow(IllegalArgumentException::new);
 
         HttpSession session = request.getSession();
         session.setAttribute("loginUser", loginUser);
@@ -67,7 +67,8 @@ public class LoginController {
         }
         memberService.join(dto);
 
-        return "index";
+        flashNotifier.notify("message.login.signUp.success");
+        return "redirect:/login/signIn";
     }
 
     @GetMapping("/myPage")

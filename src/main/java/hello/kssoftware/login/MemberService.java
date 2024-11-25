@@ -19,7 +19,7 @@ public class MemberService {
                 signUp.getId(),
                 signUp.getName(),
                 signUp.getPassword(),
-                signUp.getNumber()
+                signUp.getStudentNumber()
         );
         memberRepository.save(member);
     }

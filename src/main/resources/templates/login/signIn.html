@@ -29,7 +29,7 @@
             <label for="Id" th:text="#{label.login.signIn.id}">사용자 ID</label>
             <input type="text" id="Id" th:field="*{id}"
                    th:errorclass="field-error" class="form-control" placeholder="아이디를 입력하세요">
-            <div class="field-error" th:if="${!#fields.errors('id').isEmpty()}" th:text="${#fields.errors('id').size()} == 1 ? ${#fields.errors('id').get(0)} : #{NotBlank.signIn.id}"/>
+            <div class="field-error" th:if="${!#fields.errors('id').isEmpty()}" th:text="${#fields.errors('id').size()} == 1 ? ${#fields.errors('id').get(0)} : #{NotBlank.id}"/>
         </div>
 
         <div class="mb-3">

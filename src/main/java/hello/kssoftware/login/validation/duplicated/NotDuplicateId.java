@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = NotDuplicateIdValidator.class)
 public @interface NotDuplicateId {
 
-    String message() default "중복입니다.";
+    String message() default "";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
