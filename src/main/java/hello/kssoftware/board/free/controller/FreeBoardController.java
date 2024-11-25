@@ -34,7 +34,7 @@ public class FreeBoardController {
     @GetMapping
     public String getBoardList(@ModelAttribute BoardSearch search, Model model) {
         model.addAttribute("boards", boardService.findAll(search));
-        return URL_PATH + "/boards";
+        return URL_PATH + "/boardList";
     }
 
     @GetMapping("/{id}")
