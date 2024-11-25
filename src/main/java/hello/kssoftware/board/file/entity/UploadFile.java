@@ -2,10 +2,15 @@ package hello.kssoftware.board.file.entity;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
+import static lombok.AccessLevel.PROTECTED;
+
+@Getter
+@Setter
 @Embeddable
+@NoArgsConstructor(access = PROTECTED)
 public class UploadFile {
 
     private String uploadFileName;
@@ -15,6 +20,4 @@ public class UploadFile {
         this.uploadFileName = uploadFileName;
         this.storeFileName = storeFileName;
     }
-
-    public UploadFile() {}
 }

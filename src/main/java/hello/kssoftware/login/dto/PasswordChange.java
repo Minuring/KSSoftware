@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter @Setter
 @AllPasswordsMatch
-public class PasswordChangeDto {
+public class PasswordChange {
 
     @NotBlank
     private String oldPassword;

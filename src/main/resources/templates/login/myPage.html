@@ -114,7 +114,7 @@
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form action="/login/myPage/changePassword" th:object="${passwordChangeDto}" method="post">
+                <form action="/login/myPage/changePassword" th:object="${passwordChange}" method="post">
                     <script th:inline="javascript">
                         if ([[${#fields.hasAnyErrors()}]]) {
                             showModal('changePasswordModal');
@@ -176,7 +176,7 @@
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form action="/login/myPage/changeName" method="post" th:object="${nameChangeDto}">
+                <form action="/login/myPage/changeName" method="post" th:object="${nameChange}">
                     <script th:inline="javascript">
                         if ([[${#fields.hasAnyErrors()}]]) {
                             showModal('changeNameModal');

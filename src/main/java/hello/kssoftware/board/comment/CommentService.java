@@ -1,6 +1,7 @@
 package hello.kssoftware.board.comment;
 
 import hello.kssoftware.board.comment.dto.CommentCreate;
+import hello.kssoftware.board.comment.dto.CommentResponse;
 import hello.kssoftware.board.comment.dto.CommentUpdate;
 import hello.kssoftware.board.common.Board;
 import hello.kssoftware.board.common.BoardRepository;
@@ -47,7 +48,11 @@ public class CommentService {
         board.deleteComment(comment);
     }
 
-    public List<Comment> findAll(Board board) {
-        return board.getComments();
+    public List<CommentResponse> findAll(Long boardId) {
+        Board board = boardRepository.findById(boardId);
+        return board.getComments()
+                .stream()
+                .map(CommentResponse::from)
+                .toList();
     }
 }

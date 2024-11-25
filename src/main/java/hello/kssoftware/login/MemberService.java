@@ -1,6 +1,6 @@
 package hello.kssoftware.login;
 
-import hello.kssoftware.login.encrypt.PasswordEncoder;
+import hello.kssoftware.login.dto.SignUp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,22 +14,24 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public void join(Member member) {
+    public void join(SignUp signUp) {
+        Member member = Member.create(
+                signUp.getId(),
+                signUp.getName(),
+                signUp.getPassword(),
+                signUp.getNumber()
+        );
         memberRepository.save(member);
     }
 
     public void updatePassword(String id, String password) {
-        Member member = memberRepository.findById(id).orElseThrow();
-
-        String salt = PasswordEncoder.getSalt();
-        String encodedPassword = PasswordEncoder.encode(password, salt);
-
-        member.setPassword(encodedPassword);
-        member.setSalt(salt);
+        memberRepository.findById(id)
+                .ifPresent(member -> member.updatePassword(password));
     }
+
     public void updateName(String id, String name) {
-        Member member = memberRepository.findById(id).orElseThrow();
-        member.setName(name);
+        memberRepository.findById(id)
+                .ifPresent(member -> member.updateName(name));
     }
 
     @Transactional(readOnly = true)

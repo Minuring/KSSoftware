@@ -15,7 +15,7 @@ import java.util.List;
 public class FreeBoardResponse extends BoardResponse {
 
     public FreeBoardResponse(Long id, Member writer, String title, String content, LocalDateTime createDate, LocalDateTime updateDate, Integer views, List<Comment> comments) {
-        super(id, writer, title, content, createDate, updateDate, views, comments);
+        super(id, "free", writer, title, content, createDate, updateDate, views, comments);
     }
 
     public static FreeBoardResponse from(FreeBoard board) {

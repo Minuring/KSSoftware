@@ -20,7 +20,7 @@ public class FileBoardResponse extends BoardResponse {
     private MultipartFile file;
 
     private FileBoardResponse(Long id, Member writer, String title, String content, LocalDateTime createDate, LocalDateTime updateDate, Integer views, List<Comment> comments, MultipartFile file) {
-        super(id, writer, title, content, createDate, updateDate, views, comments);
+        super(id, "file", writer, title, content, createDate, updateDate, views, comments);
         this.file = file;
     }
 

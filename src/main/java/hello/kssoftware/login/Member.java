@@ -1,5 +1,6 @@
 package hello.kssoftware.login;
 
+import hello.kssoftware.login.encrypt.PasswordEncoder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -10,8 +11,6 @@ import lombok.ToString;
 
 @Entity
 @Getter
-@Setter
-@ToString
 @EqualsAndHashCode
 public class Member {
 
@@ -34,15 +33,23 @@ public class Member {
     protected Member() {
     }
 
-    public static Member createMember(String id, String name, String password, String salt, Integer number) {
+    public static Member create(String id, String name, String rawPassword, Integer studentNumber) {
         Member member = new Member();
         member.id = id;
         member.name = name;
-        member.password = password;
-        member.salt = salt;
-        member.number = number;
+        member.salt = PasswordEncoder.getSalt();
+        member.password = PasswordEncoder.encode(rawPassword, member.salt);
+        member.number = studentNumber;
         return member;
     }
 
+    public void updatePassword(String newRawPassword) {
+        this.salt = PasswordEncoder.getSalt();
+        this.password = PasswordEncoder.encode(newRawPassword, salt);
+    }
+
+    public void updateName(String newName) {
+        this.name = newName;
+    }
 }
 
