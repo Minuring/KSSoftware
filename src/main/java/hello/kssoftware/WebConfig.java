@@ -16,6 +16,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
+    private static final String[] VIEW_RESOURCE_PATHS = new String[]{
+            "/css/**",
+            "/*.png",
+            "/img/**",
+            "/js/**"
+    };
+
     private final FlashNotifier flashNotifier;
     private final BoardRepository boardRepository;
 
@@ -28,9 +35,11 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginCheckInterceptor(flashNotifier))
                 .order(1)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/", "/login/signIn", "/login/signUp", "/css/**",
-                        "/board", "/*.ico", "/error", "/*.png", "/img/**", "/js/**");
+                .addPathPatterns("/**", "/etc/usedTrade/**")
+                .excludePathPatterns(VIEW_RESOURCE_PATHS)
+                .excludePathPatterns("/", "/login/signIn", "/login/signUp", "/error")
+                .excludePathPatterns("/board/free", "/board/free/{boardId:[\\d]+}")
+                .excludePathPatterns("/etc/study/**", "/etc/creditCalculator/**");
 
         registry.addInterceptor(new AuthorMatchCheckInterceptor(boardRepository, flashNotifier))
                 .order(2)

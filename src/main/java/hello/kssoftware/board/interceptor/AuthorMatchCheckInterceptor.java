@@ -13,6 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
@@ -22,37 +23,38 @@ public class AuthorMatchCheckInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) throws Exception {
-
-        Member loginUser = (Member) request.getSession(false).getAttribute("loginUser");
-        if (loginUser == null) return false;
-
-        String requestURI = request.getRequestURI();
+        Member loginUser = Optional.ofNullable(request.getSession(false))
+                .map(session -> (Member) session.getAttribute("loginUser"))
+                .orElse(null);
         Long boardId = getIdFromPathVariable(request);
         Board board = boardRepository.findById(boardId);
 
+        if (loginUser == null) {
+            flashNotifier.notify("required_login");
+            response.sendRedirect("/login/signIn");
+            return false;
+        }
+
         boolean matches;
-        if (requestURI.contains("comment")) {
+        if (request.getRequestURI().contains("comment")) {
             matches = doCompareWithCommentAuthor(request, board, loginUser);
         } else {
-            matches = doCompareWithBoardAuthor(board, loginUser);
+            matches = board.isWrittenBy(loginUser);
         }
 
-        if (!matches) {
-            flashNotifier.notify("not_author");
-            response.sendRedirect("/board/" + boardId);
+        if (matches) {
+            return true;
         }
 
-        return matches;
-    }
-
-    private static boolean doCompareWithBoardAuthor(final Board board, final Member loginUser) {
-        return board.getWriter().equals(loginUser);
+        flashNotifier.notify("not_author");
+        response.sendRedirect("/board/" + board.getType() + "/" + boardId);
+        return false;
     }
 
     private static boolean doCompareWithCommentAuthor(final HttpServletRequest request, final Board board, final Member loginUser) {
         Long commentId = Long.valueOf(request.getParameter("commentId"));
         Comment comment = board.getComment(commentId);
-        return comment.getWriter().equals(loginUser);
+        return comment.isWrittenBy(loginUser);
     }
 
     private static Long getIdFromPathVariable(final HttpServletRequest request) {
