@@ -43,7 +43,7 @@ public class FileBoardController {
         List<FileBoardResponse> boards = boardService.findAll(search);
 
         model.addAttribute("boards", boards);
-        return URL_PATH + "/boards";
+        return URL_PATH + "/boardList";
     }
 
     @GetMapping("/{id}")
