@@ -53,6 +53,11 @@
                        data-bs-toggle="popover" data-bs-placement="bottom"
                        data-bs-custom-class="custom-popover"
                        data-bs-content="Caps Lock이 켜져 있습니다.">
+                <div class="input-group-append">
+                    <span class="input-group-text" id="passwordToggle" onclick="togglePasswordVisibility()">
+                        <i class="fas fa-eye-slash"></i>
+                    </span>
+                </div>
             </div>
             <div class="field-error" th:errors="*{password}">비밀번호 오류</div>
         </div>
@@ -84,6 +89,18 @@
                 capsLockPopover.popover('hide');
             });
         });
+
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById('password');
+            const passwordToggle = document.getElementById('passwordToggle');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                passwordToggle.innerHTML = '<i class="fas fa-eye"></i>';
+            } else {
+                passwordField.type = 'password';
+                passwordToggle.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            }
+        }
     </script>
 </div>
 </body>
