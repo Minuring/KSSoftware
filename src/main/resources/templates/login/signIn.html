@@ -74,7 +74,6 @@
     <script>
         $(document).ready(function () {
             const capsLockPopover = $('[data-bs-toggle="popover"]');
-            capsLockPopover.popover();
 
             $('#password').on('keydown', function (event) {
                 const capsLockOn = event.originalEvent.getModifierState('CapsLock');
