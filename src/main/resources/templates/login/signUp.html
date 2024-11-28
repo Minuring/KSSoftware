@@ -3,6 +3,13 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <style layout:fragment="css">
         .container {
             max-width: 560px;
@@ -15,30 +22,40 @@
     </style>
 </head>
 
+<body>
 <div class="container" layout:fragment="content">
-
     <div class="py-5 text-center">
         <h2 th:text="#{label.login.signUp}">회원 가입</h2>
     </div>
 
-    <form action="/login/signUp"  th:object="${signUp}" method="post">
+    <form action="/login/signUp" th:object="${signUp}" method="post">
         <div>
             <label for="Id" th:text="#{label.login.signUp.id}">아이디</label>
             <input type="text" id="Id" th:field="*{id}"
                    th:errorclass="field-error" class="form-control" placeholder="아이디를 입력하세요">
-            <div class="field-error" th:if="${!#fields.errors('id').isEmpty()}" th:text="${#fields.errors('id').size()} == 1 ? ${#fields.errors('id').get(0)} : #{NotBlank.id}"/>
+            <div class="field-error" th:if="${!#fields.errors('id').isEmpty()}"
+                 th:text="${#fields.errors('id').size()} == 1 ? ${#fields.errors('id').get(0)} : #{NotBlank.id}"/>
         </div>
         <div>
             <label for="password" th:text="#{label.login.signUp.password}">비밀번호</label>
-            <input type="password" id="password" th:field="*{password}"
-                   th:errorclass="field-error" class="form-control" placeholder="비밀번호를 입력하세요">
-            <div class="field-error" th:if="${!#fields.errors('password').isEmpty()}" th:text="${#fields.errors('password').size()} == 1 ? ${#fields.errors('password').get(0)} : #{NotBlank.password}"></div>
+            <div class="input-group">
+                <input type="password" id="password" th:field="*{password}"
+                       th:errorclass="field-error" class="form-control" placeholder="비밀번호를 입력하세요">
+                <div class="input-group-append">
+                    <span class="input-group-text" id="passwordToggle" onclick="togglePasswordVisibility()">
+                        <i class="fas fa-eye-slash"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="field-error" th:if="${!#fields.errors('password').isEmpty()}"
+                 th:text="${#fields.errors('password').size()} == 1 ? ${#fields.errors('password').get(0)} : #{NotBlank.password}"></div>
         </div>
         <div>
             <label for="name" th:text="#{label.login.signUp.name}">닉네임</label>
             <input type="text" id="name" th:field="*{name}"
                    th:errorclass="field-error" class="form-control" placeholder="닉네임을 입력하세요">
-            <div class="field-error" th:if="${!#fields.errors('name').isEmpty()}" th:text="${#fields.errors('name').size()} == 1 ? ${#fields.errors('name').get(0)} : #{NotBlank.name}"/>
+            <div class="field-error" th:if="${!#fields.errors('name').isEmpty()}"
+                 th:text="${#fields.errors('name').size()} == 1 ? ${#fields.errors('name').get(0)} : #{NotBlank.name}"/>
         </div>
         <div>
             <label for="studentNumber" th:text="#{label.login.signUp.studentNumber}">학번</label>
@@ -52,7 +69,8 @@
         <div class="row">
             <div class="col">
                 <button class="w-100 btn btn-primary btn-lg" type="submit"
-                th:text="#{button.submit}">등록</button>
+                        th:text="#{button.submit}">등록
+                </button>
             </div>
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg"
@@ -63,5 +81,22 @@
                 </button>
             </div>
         </div>
-</form>
+    </form>
+
+    <script>
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById('password');
+            const passwordToggle = document.getElementById('passwordToggle');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                passwordToggle.innerHTML = '<i class="fas fa-eye"></i>';
+            } else {
+                passwordField.type = 'password';
+                passwordToggle.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            }
+        }
+    </script>
 </div>
+</body>
+</html>
+
